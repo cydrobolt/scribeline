@@ -6,11 +6,32 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var start = require('./routes/start');
-
 var users = require('./routes/users');
 
 var app = express();
+/*
+ * Mongoose
+*/
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/scribeline');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+  console.log("Connected to MongoDB server");
+});
+var User = mongoose.model('User', { username: String, password: String, email: String });
+
+// var kitty = new Cat({ name: 'Zildjian' });
+/*
+kitty.save(function (err) {
+  if (err) // ...
+  console.log('meow');
+});
+*/
+/*
+ * /Mongoose
+*/
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,10 +53,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', routes);
-app.use('/start', function(req, res) {
+app.get('/start', function(req, res) {
   res.render('start', { title: 'Express' });
 });
+app.post('/signup', function(req, res) {
+  var username = req.param('username');
+  var password = req.param('password');
+  var email = req.param('email');
+  res.send("Username: "+username+" <br /> Password: "+password+"<br />Email :"+email);
 
+
+});
 app.use('/users', users);
 
 
