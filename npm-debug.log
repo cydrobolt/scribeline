@@ -1,0 +1,162 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node',
+1 verbose cli   '/usr/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'express-generator',
+1 verbose cli   '-g' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.32
+4 verbose cache add [ 'express-generator', null ]
+5 verbose cache add name=undefined spec="express-generator" args=["express-generator",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'express-generator',
+6 verbose parsed url   path: 'express-generator',
+6 verbose parsed url   href: 'express-generator' }
+7 silly lockFile 198a68d8-express-generator express-generator
+8 verbose lock express-generator /home/cydrobolt/.npm/198a68d8-express-generator.lock
+9 silly lockFile 198a68d8-express-generator express-generator
+10 silly lockFile 198a68d8-express-generator express-generator
+11 verbose addNamed [ 'express-generator', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile bd41e3d3-express-generator express-generator@
+14 verbose lock express-generator@ /home/cydrobolt/.npm/bd41e3d3-express-generator.lock
+15 silly addNameRange { name: 'express-generator', range: '*', hasData: false }
+16 verbose request where is /express-generator
+17 verbose request registry https://registry.npmjs.org/
+18 verbose request id 3602df3c152f6c64
+19 verbose url raw /express-generator
+20 verbose url resolving [ 'https://registry.npmjs.org/', './express-generator' ]
+21 verbose url resolved https://registry.npmjs.org/express-generator
+22 verbose request where is https://registry.npmjs.org/express-generator
+23 info trying registry request attempt 1 at 21:17:22
+24 http GET https://registry.npmjs.org/express-generator
+25 http 200 https://registry.npmjs.org/express-generator
+26 silly registry.get cb [ 200,
+26 silly registry.get   { date: 'Fri, 17 Oct 2014 01:17:22 GMT',
+26 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+26 silly registry.get     etag: '"D8MAOBCOVFO78JBUQNLK8DEX0"',
+26 silly registry.get     'content-type': 'application/json',
+26 silly registry.get     'cache-control': 'max-age=60',
+26 silly registry.get     'content-length': '12149',
+26 silly registry.get     'accept-ranges': 'bytes',
+26 silly registry.get     via: '1.1 varnish',
+26 silly registry.get     age: '0',
+26 silly registry.get     'x-served-by': 'cache-iad2124-IAD',
+26 silly registry.get     'x-cache': 'HIT',
+26 silly registry.get     'x-cache-hits': '1',
+26 silly registry.get     'x-timer': 'S1413508642.388374,VS0,VE10',
+26 silly registry.get     vary: 'Accept',
+26 silly registry.get     'keep-alive': 'timeout=10, max=50',
+26 silly registry.get     connection: 'Keep-Alive' } ]
+27 silly addNameRange number 2 { name: 'express-generator', range: '*', hasData: true }
+28 silly addNameRange versions [ 'express-generator',
+28 silly addNameRange   [ '1.0.0', '3.0.0', '4.0.0', '4.2.0', '4.8.0', '4.9.0' ] ]
+29 verbose addNamed [ 'express-generator', '4.9.0' ]
+30 verbose addNamed [ '4.9.0', '4.9.0' ]
+31 silly lockFile 0580e4a0-express-generator-4-9-0 express-generator@4.9.0
+32 verbose lock express-generator@4.9.0 /home/cydrobolt/.npm/0580e4a0-express-generator-4-9-0.lock
+33 silly lockFile 995b2f4d-ator-express-generator-4-9-0-tgz https://registry.npmjs.org/express-generator/-/express-generator-4.9.0.tgz
+34 verbose lock https://registry.npmjs.org/express-generator/-/express-generator-4.9.0.tgz /home/cydrobolt/.npm/995b2f4d-ator-express-generator-4-9-0-tgz.lock
+35 verbose addRemoteTarball [ 'https://registry.npmjs.org/express-generator/-/express-generator-4.9.0.tgz',
+35 verbose addRemoteTarball   'f5da999d12ae4b072f6e61055633f7ad9e49fd73' ]
+36 info retry fetch attempt 1 at 21:17:22
+37 verbose fetch to= /tmp/npm-6210-on0tI-J0/registry.npmjs.org/express-generator/-/express-generator-4.9.0.tgz
+38 http GET https://registry.npmjs.org/express-generator/-/express-generator-4.9.0.tgz
+39 http 200 https://registry.npmjs.org/express-generator/-/express-generator-4.9.0.tgz
+40 silly lockFile 995b2f4d-ator-express-generator-4-9-0-tgz https://registry.npmjs.org/express-generator/-/express-generator-4.9.0.tgz
+41 silly lockFile 995b2f4d-ator-express-generator-4-9-0-tgz https://registry.npmjs.org/express-generator/-/express-generator-4.9.0.tgz
+42 silly lockFile 0580e4a0-express-generator-4-9-0 express-generator@4.9.0
+43 silly lockFile 0580e4a0-express-generator-4-9-0 express-generator@4.9.0
+44 silly lockFile bd41e3d3-express-generator express-generator@
+45 silly lockFile bd41e3d3-express-generator express-generator@
+46 silly resolved [ { name: 'express-generator',
+46 silly resolved     description: 'Express\' application generator',
+46 silly resolved     version: '4.9.0',
+46 silly resolved     author: { name: 'TJ Holowaychuk', email: 'tj@vision-media.ca' },
+46 silly resolved     contributors: [ [Object], [Object], [Object], [Object], [Object] ],
+46 silly resolved     keywords:
+46 silly resolved      [ 'express',
+46 silly resolved        'framework',
+46 silly resolved        'sinatra',
+46 silly resolved        'web',
+46 silly resolved        'rest',
+46 silly resolved        'restful',
+46 silly resolved        'router',
+46 silly resolved        'app',
+46 silly resolved        'api' ],
+46 silly resolved     repository: { type: 'git', url: 'https://github.com/expressjs/generator' },
+46 silly resolved     license: 'MIT',
+46 silly resolved     dependencies: { commander: '1.3.2', mkdirp: '0.5.0' },
+46 silly resolved     main: 'bin/express',
+46 silly resolved     preferGlobal: true,
+46 silly resolved     bin: { express: './bin/express' },
+46 silly resolved     devDependencies:
+46 silly resolved      { mocha: '~1.21.4',
+46 silly resolved        rimraf: '~2.2.8',
+46 silly resolved        should: '~4.0.4',
+46 silly resolved        supertest: '~0.13.0' },
+46 silly resolved     engines: { node: '>= 0.8.0' },
+46 silly resolved     files: [ 'LICENSE', 'bin/', 'templates/' ],
+46 silly resolved     scripts:
+46 silly resolved      { test: 'mocha --reporter spec --bail --check-leaks test/',
+46 silly resolved        'test-travis': 'mocha --reporter spec --bail --check-leaks test/' },
+46 silly resolved     gitHead: 'd00f7fc2c9e3a1f22f740019bab64fc0f579146d',
+46 silly resolved     bugs: { url: 'https://github.com/expressjs/generator/issues' },
+46 silly resolved     homepage: 'https://github.com/expressjs/generator',
+46 silly resolved     _id: 'express-generator@4.9.0',
+46 silly resolved     _shasum: 'f5da999d12ae4b072f6e61055633f7ad9e49fd73',
+46 silly resolved     _from: 'express-generator@',
+46 silly resolved     _npmVersion: '1.4.21',
+46 silly resolved     _npmUser: { name: 'dougwilson', email: 'doug@somethingdoug.com' },
+46 silly resolved     maintainers: [ [Object], [Object], [Object], [Object], [Object], [Object] ],
+46 silly resolved     dist:
+46 silly resolved      { shasum: 'f5da999d12ae4b072f6e61055633f7ad9e49fd73',
+46 silly resolved        tarball: 'http://registry.npmjs.org/express-generator/-/express-generator-4.9.0.tgz' },
+46 silly resolved     directories: {},
+46 silly resolved     _resolved: 'https://registry.npmjs.org/express-generator/-/express-generator-4.9.0.tgz' } ]
+47 info install express-generator@4.9.0 into /usr/lib
+48 info installOne express-generator@4.9.0
+49 verbose lib/node_modules/express-generator unbuild
+50 verbose tar unpack /home/cydrobolt/.npm/express-generator/4.9.0/package.tgz
+51 silly lockFile 73f1f6cd-b-node-modules-express-generator tar:///usr/lib/node_modules/express-generator
+52 verbose lock tar:///usr/lib/node_modules/express-generator /home/cydrobolt/.npm/73f1f6cd-b-node-modules-express-generator.lock
+53 silly lockFile 0050d421-ress-generator-4-9-0-package-tgz tar:///home/cydrobolt/.npm/express-generator/4.9.0/package.tgz
+54 verbose lock tar:///home/cydrobolt/.npm/express-generator/4.9.0/package.tgz /home/cydrobolt/.npm/0050d421-ress-generator-4-9-0-package-tgz.lock
+55 silly gunzTarPerm modes [ '775', '664' ]
+56 error Error: EACCES, mkdir '/usr/lib/node_modules/express-generator'
+56 error  { [Error: EACCES, mkdir '/usr/lib/node_modules/express-generator']
+56 error   errno: 3,
+56 error   code: 'EACCES',
+56 error   path: '/usr/lib/node_modules/express-generator',
+56 error   fstream_type: 'Directory',
+56 error   fstream_path: '/usr/lib/node_modules/express-generator',
+56 error   fstream_class: 'DirWriter',
+56 error   fstream_stack:
+56 error    [ '/usr/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
+56 error      '/usr/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53',
+56 error      'Object.oncomplete (fs.js:107:15)' ] }
+57 error Please try running this command again as root/Administrator.
+58 error System Linux 3.15.6-200.fc20.x86_64
+59 error command "/usr/bin/node" "/usr/bin/npm" "install" "express-generator" "-g"
+60 error cwd /home/cydrobolt/Scribeline
+61 error node -v v0.10.32
+62 error npm -v 1.4.28
+63 error path /usr/lib/node_modules/express-generator
+64 error fstream_path /usr/lib/node_modules/express-generator
+65 error fstream_type Directory
+66 error fstream_class DirWriter
+67 error code EACCES
+68 error errno 3
+69 error stack Error: EACCES, mkdir '/usr/lib/node_modules/express-generator'
+70 error fstream_stack /usr/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
+70 error fstream_stack /usr/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53
+70 error fstream_stack Object.oncomplete (fs.js:107:15)
+71 verbose exit [ 3, true ]

@@ -1,0 +1,29 @@
+{
+  "name": "Scribeline",
+  "version": "1.0.0",
+  "description": "Simplifies your life by easing outline creation and note taking.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/cydrobolt/scribeline"
+  },
+  "keywords": [
+    "outline",
+    "student",
+    "note",
+    "taking",
+    "simplicity"
+  ],
+  "author": "Chaoyi Zha",
+  "license": "Apache",
+  "bugs": {
+    "url": "https://github.com/cydrobolt/scribeline/issues"
+  },
+  "homepage": "https://github.com/cydrobolt/scribeline",
+  "dependencies": {
+    "express": "^4.9.7"
+  }
+}
