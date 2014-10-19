@@ -1,0 +1,27 @@
+extends layout
+
+block content
+	div(style="text-align:center")
+		a(href="/")
+			img(src='/images/scribeline.png')
+		br
+		br
+		b Sign In
+		br
+		br
+		div(class="col-md-4")
+		div(class="col-md-4")
+			br
+			br
+			form(action="/plogin", method="POST")
+				b Username:
+				br
+				input(type='text', name='username', id='username', class='form-control')
+				br
+				b Password:
+				br
+				input(type='password', name='password', id='password', class='form-control')
+				br
+				br
+				input(type='submit', id='submit', style="width:80%", class='btn btn-danger', value="Sign Up")
+		div(class="col-md-4")

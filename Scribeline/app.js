@@ -3,6 +3,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var session = require('cookie-session')
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
@@ -13,6 +14,13 @@ var app = express();
  * Mongoose
 */
 var mongoose = require('mongoose');
+
+app.use(session({
+  keys: ['abbb3324234', 'aeraweorq39847lkajer79234'],
+  secureProxy: true // if you do SSL outside of node
+}))
+
+
 mongoose.connect('mongodb://localhost/scribeline');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -54,18 +62,44 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.get('/start', function(req, res) {
-  res.render('start', { title: 'Express' });
+  res.render('start', { title: 'Scribeline' });
 });
 app.post('/signup', function(req, res) {
   var username = req.param('username');
   var password = req.param('password');
   var email = req.param('email');
-  res.send("Username: "+username+" <br /> Password: "+password+"<br />Email :"+email);
+  //res.send("Username: "+username+" <br /> Password: "+password+"<br />Email :"+email);
+  
+  
+  var newUser = new User({ username: username, password: password,email: email });
 
+  newUser.save(function (err) {
+    if (err) {
+		console.log("Error saving user: "+err);
+	}
+  });
+  res.render('login', { flash: "Registered!" });
 
 });
-app.use('/users', users);
+app.post('/plogin', function(req, res) {
+	var username = req.param('username');
+	var password_s = req.param('password');
 
+	// find each person with a last name matching 'Ghost', selecting the `name` and `occupation` fields
+	User.findOne({ 'username': username }, 'password', function (err, user) {
+	  if (err) return handleError(err);
+	  if (password == password_s) {
+		  // Woot, correct password
+		  req.session.username = username;
+		  response.writeHead(301,
+     		  {Location: '/'}
+    	  );
+	      response.end();
+	  }
+		  
+	});
+  
+});
 
 
 /*
