@@ -20,5 +20,20 @@ html
 					a(href="/about", style="display:inline") About
 				span(class="pull-right", style="display:inline")
 					| Copyright 2014 Chaoyi Zha
-			
-				
+
+		if flash
+			script(src="/javascript/jquery.floatingmessage.min.js")
+			script
+				| // Get flashed messages
+				| $( document ).ready(function() {
+				| 	$.floatingMessage("<b>#{flash}</b>",{
+				| 		time:3000,
+				| 		position : "top-right",
+				| 		show : "fold",
+				| 		hide : "explode",
+				| 		stuffEaseTime : 500,
+				| 		stuffEasing : "swing",
+				| 		moveEaseTime : 200,
+				| 		moveEasing   : "easeInExpo"
+				| 	});
+				| });

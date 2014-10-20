@@ -40,7 +40,6 @@ kitty.save(function (err) {
  * /Mongoose
 */
 
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -57,7 +56,9 @@ app.use(express.static(path.join(__dirname, 'public')));
  * Routings
  *
 */
-
+function genHandleError(res, err) {
+	res.render('error', {error: err});
+}
 
 
 app.use('/', routes);
@@ -69,8 +70,8 @@ app.post('/signup', function(req, res) {
   var password = req.param('password');
   var email = req.param('email');
   //res.send("Username: "+username+" <br /> Password: "+password+"<br />Email :"+email);
-  
-  
+
+
   var newUser = new User({ username: username, password: password,email: email });
 
   newUser.save(function (err) {
@@ -78,8 +79,29 @@ app.post('/signup', function(req, res) {
 		console.log("Error saving user: "+err);
 	}
   });
-  res.render('login', { flash: "Registered!" });
+  res.render('signin', { flash: "Registered!" });
 
+});
+app.get('/signin', function(req, res) {
+    try {
+        if(req.session.username != "" && req.session.username != null) {
+            res.writeHead(301,
+                 {Location: '/'}
+            );
+            res.end();
+        }
+    }
+    catch(err) {
+        res.render('signin');
+        return;
+    }
+	res.render('signin');
+});
+app.get('/plogin', function(req, res) {
+    res.writeHead(301,
+         {Location: '/signin'}
+    );
+    res.end();
 });
 app.post('/plogin', function(req, res) {
 	var username = req.param('username');
@@ -87,18 +109,23 @@ app.post('/plogin', function(req, res) {
 
 	// find each person with a last name matching 'Ghost', selecting the `name` and `occupation` fields
 	User.findOne({ 'username': username }, 'password', function (err, user) {
-	  if (err) return handleError(err);
-	  if (password == password_s) {
-		  // Woot, correct password
-		  req.session.username = username;
-		  response.writeHead(301,
-     		  {Location: '/'}
-    	  );
-	      response.end();
-	  }
-		  
+	  if (err) return genHandleError(res, err);
+      try {
+    	  if (user.password == password_s) {
+    		  // Woot, correct password
+    		  req.session.username = username;
+    		  res.writeHead(301,
+         		  {Location: '/'}
+        	  );
+    	      res.end();
+    	  }
+      }
+      catch (err){
+          res.render('signin', {flash: "Invalid User or Password"});
+      }
+
 	});
-  
+
 });
 
 
