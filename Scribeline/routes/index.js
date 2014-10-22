@@ -5,9 +5,13 @@ var router = express.Router();
 router.get('/', function(req, res) {
     var username = req.session.username;
     if (username) {
-        res.render('error', {error: "Node.js is an ass"});
+        res.render('notes', {username: username});
+        res.end();
+        return;
+    } else {
+        res.render('index');
+        return;
     }
-    res.render('index', { title: 'Express' });
 });
 
 module.exports = router;
