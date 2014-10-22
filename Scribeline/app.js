@@ -100,6 +100,14 @@ app.get('/signin', function(req, res) {
     }
 	res.render('signin');
 });
+app.get('/logout', function(req, res) {
+    req.session.username = null;
+    res.writeHead(301,
+         {Location: '/'}
+    );
+    res.end();
+    return;
+});
 app.get('/plogin', function(req, res) {
     res.writeHead(301,
          {Location: '/signin'}
