@@ -3,22 +3,23 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
-var session = require('cookie-session')
+var session = require('cookie-session');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
+var redis = require('redis');
 
 var app = express();
 /*
  * Mongoose
 */
 var mongoose = require('mongoose');
-
 app.use(session({
-  keys: ['abbb3324234', 'aeraweorq39847lkajer79234'],
-  secureProxy: true // if you do SSL outside of node
-}))
+    secret: 'lol cat'
+}));
 
 
 mongoose.connect('mongodb://localhost/scribeline');
@@ -82,13 +83,15 @@ app.post('/signup', function(req, res) {
   res.render('signin', { flash: "Registered!" });
 
 });
+
 app.get('/signin', function(req, res) {
     try {
-        if(req.session.username != "" && req.session.username != null) {
+        if(req.session.username) {
             res.writeHead(301,
                  {Location: '/'}
             );
             res.end();
+            return;
         }
     }
     catch(err) {
@@ -120,7 +123,7 @@ app.post('/plogin', function(req, res) {
     	      res.end();
     	  }
       }
-      catch (err){
+      catch (err) {
           res.render('signin', {flash: "Invalid User or Password"});
       }
 
