@@ -6,13 +6,26 @@ block content
             img(src='/images/scribeline.png')
         br
         br
-        p Simplify your life by making note-taking and outline creation second nature with Scribeline.
-        br
-        br
-        a(class='btn btn-success', href="/start")
-            i(class="fa fa-book")
-            |     Get Started
+        a(class='btn btn-success', href="#")
+            i(class="fa fa-file")
+            |     Save
         &nbsp; &nbsp; &nbsp;
-        a(class='btn btn-success', href="/signin")
-            i(class="fa fa-sign-in")
-            |     Sign In
+        a(class='btn btn-warning', href="#")
+            i(class="fa fa-book")
+            |     Save As
+        &nbsp; &nbsp; &nbsp;
+        a(class='btn btn-danger', href="#")
+            i(class="fa fa-file-text")
+            |     New
+        &nbsp; &nbsp; &nbsp;
+        a(class='btn btn-info', href="#", id="help")
+            i(class="fa fa-question-circle")
+            |     Help
+        div(style="padding-top:10px;padding-bottom:10px")
+
+        br
+        div(style='margin:0 auto; width: 70%; padding-top:50px')
+            div(style="width:100%;height:450px;text-align:left", name="area", id="area", contenteditable="true", class="form-control")
+                | Some notes...nice?
+script(src="/javascript/alert.js")
+script(src="/javascript/notes.js")
