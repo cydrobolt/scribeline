@@ -2,11 +2,11 @@ extends layout
 
 block content
     div(class="pull-right")
-        a(href="/logout")
+        a(href="/logout", tabindex="-1")
             | Log Out
 
-    div(style="text-align:center")
-        a(href="/")
+    div(style="text-align:center", tabindex="-1")
+        a(href="/", tabindex="-1")
             img(src='/images/scribeline.png')
         br
         br
@@ -29,16 +29,22 @@ block content
 
         br
         div(style='margin:0 auto; width: 70%; padding-top:50px')
-            div(style="width:100%;height:450px;text-align:left", name="area", id="area", contenteditable="true", class="form-control")
+            div(style="width:100%;height:450px;text-align:left", name="area", id="area", contenteditable="true", TabIndex = "-1", class="form-control")
                 | Some notes...nice?
     script(src="/javascript/notes.js")
     script(src="/javascript/alert.js")
     script(src="/javascript/shortcut.js")
+    script(src="/javascript/cursorctl.js")
     script
-        | shortcut.add("Tab",function() {
-        | 	alert("Tabbing is fun");
+        | shortcut.add("Ctrl+Y",function() {
+        |   addLevel();
         | });
-        | shortcut.add("Shift+Tab",function() {
-        | 	alert("Removing tabs is also fun");
-        |   this.preventDefault();
+        | shortcut.add("Ctrl+B",function() {
+        |   shortenField();
+        | });
+        | shortcut.add("Enter",function() {
+        | 	chkMain();
+        | });
+        | shortcut.add("Ctrl+U",function() {
+        | 	delLevel();
         | });

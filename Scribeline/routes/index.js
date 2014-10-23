@@ -5,7 +5,7 @@ var router = express.Router();
 router.get('/', function(req, res) {
     var username = req.session.username;
     if (username) {
-        res.render('notes', {username: username});
+        res.render('notes', {username: username, show_footer: "True"});
         res.end();
         return;
     } else {
