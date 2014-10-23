@@ -9,7 +9,7 @@ router.get('/', function(req, res) {
         res.end();
         return;
     } else {
-        res.render('index');
+        res.render('index', {hide_footer: "True"});
         return;
     }
 });

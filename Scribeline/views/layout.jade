@@ -10,16 +10,18 @@ html
 		block content
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
 		script(src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js")
-		div(class='col-md-12')
-			footer(style="padding-top:150px")
-				span(class='pull-left')
-					a(href="//github.com/cydrobolt/scribeline") Github
-					| &nbsp;|&nbsp;
-					a(href="/legal") Legal
-					| &nbsp;|&nbsp;
-					a(href="/about", style="display:inline") About
-				span(class="pull-right", style="display:inline")
-					| Copyright 2014 Chaoyi Zha
+		script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
+		if (!hide_footer)
+			div(class='col-md-12')
+				footer(style="padding-top:150px")
+					span(class='pull-left')
+						a(href="//github.com/cydrobolt/scribeline") Github
+						| &nbsp;|&nbsp;
+						a(href="/legal") Legal
+						| &nbsp;|&nbsp;
+						a(href="/about", style="display:inline") About
+					span(class="pull-right", style="display:inline")
+						| Copyright 2014 Chaoyi Zha
 
 		if flash
 			script(src="/javascript/jquery.floatingmessage.min.js")

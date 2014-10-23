@@ -63,6 +63,13 @@ function genHandleError(res, err) {
 
 
 app.use('/', routes);
+
+app.post('/sync-ep', function(req, res) {
+    var username = req.session.username;
+    if (!username) {
+        res.end();
+    }
+});
 app.get('/start', function(req, res) {
   res.render('start', { title: 'Scribeline' });
 });
