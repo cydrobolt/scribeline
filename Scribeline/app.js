@@ -8,10 +8,9 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var sanitizeHtml = require('sanitize-html');
 var session = require('express-session');
-var RedisStore = require('connect-redis')(session);
-var redis = require('redis');
-
+var crypto = require('crypto');
 var app = express();
 /*
  * Mongoose
@@ -29,7 +28,8 @@ db.once('open', function callback () {
   console.log("Connected to MongoDB server");
 });
 var User = mongoose.model('User', { username: String, password: String, email: String });
-var Doc = mongoose.model('Doc');
+var Doc = mongoose.model('Doc', {_id: String, username: String, title: String, content: String});
+
 
 // var kitty = new Cat({ name: 'Zildjian' });
 /*
@@ -66,34 +66,60 @@ function genHandleError(res, err) {
 app.use('/', routes);
 
 app.post('/action-ep', function(req, res) {
-    var username = req.session.username;
-    if (!username) {
-        res.end();
-    }
-    var docTitle = req.param('docTitle');
-    var docContent = req.param('docContent');
-    if (!docTitle || docTitle.length<1 || !docContent || docContent.length<1) {
-        res.send('Error: Title/content cannot be blank. ');
-        res.end();
-        return;
-    }
-    if (docTitle.length>100) {
-        res.send('Error: Title must be shorter than 100 characters.');
-        res.end();
-        return;
-    }
-    // Save it!
-    var saveDoc = new Doc({ username: {title: docTitle, content: docContent}});
+    if (req.param('action') == "save") {
+        var username = req.session.username;
+        if (!username) {
+            res.end();
+            return;
+        }
+        var docTitle = req.param('title');
+        var docContent = req.param('content');
+        var docID = req.param('id');
+        if (!docTitle || docTitle.length<1 || !docContent || docContent.length<1) {
+            res.send('Error: Title/content cannot be blank. ');
+            console.log(docTitle);
+            console.log('\n'+docContent)
+            res.end();
+            return;
+        }
+        if (docTitle.length>100) {
+            res.send('Error: Title must be shorter than 100 characters.');
+            res.end();
+            return;
+        }
+        docContent = sanitizeHtml(docContent,
+          {
+          allowedTags: [ 'h1','h2','h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'ul', 'ol', 'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div', 'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre' ],
+          allowedAttributes: {
+            a: [ 'href', 'name', 'target' ],
+            // We don't currently allow img itself by default, but this
+            // would make sense if we did
+            img: [ 'src' ]
+          },
+          // Lots of these won't come up by default because we don't allow them
+          selfClosing: [ 'img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta' ],
+          // URL schemes we permit
+          allowedSchemes: [ 'http', 'https', 'ftp', 'mailto' ]
+          }
+      ); // Sanitize
 
-    saveDoc.save(function (err) {
-      if (err) {
-          console.log("Error saving document: "+err);
-          res.send('Error while saving document. Try again later');
-      }
-    });
-    res.send("OK")
-    res.end();
-    return;
+        var saveDoc = new Doc({ _id: docID,username: username, title: docTitle, content: docContent});
+
+        saveDoc.save(function (err) {
+          if (err) {
+              console.log("Error saving document: "+err);
+              res.send('Error while saving document. Try again later');
+          }
+        });
+        res.send("OK")
+        res.end();
+        return;
+    }
+    else {
+        res.send("Invalid action");
+        res.end();
+        return;
+    }
 });
 app.get('/start', function(req, res) {
   res.render('start', { title: 'Scribeline' });

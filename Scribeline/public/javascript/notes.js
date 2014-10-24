@@ -1,12 +1,12 @@
-
-
 function triggerAlert () {
     createAlert("Tip<br />", 'Welcome to Scribeline Editor! To add a layer, press Ctrl+Y.\
     To remove a layer, simply press Ctrl+U. Save as you go,\
     save as or open a new file to get started right away! <br/>\
     <b>Keybinds:</b>\
     <ul>\
-    <li>Ctrl+B to reduce area size</li>\
+    <li>Ctrl+E to reduce area size</li>\
+    <li>Ctrl+S to save</li>\
+    <li>Ctrl+B to <b>bolden</b></li>\
     </ul> '); // Located at /javascript/alert.js
 
 }
@@ -24,9 +24,10 @@ function insertTextAtCursor(text) {
         document.selection.createRange().text = text;
     }
 }
-var currLevel;
+var currLevel = 0;
 var height = 450;
 var textHeight_s = 5; // Actual character height
+var currID = guid(); // Assume new doc, generate currID
 var textHeight = textHeight_s + 5; // Approx line height
 $('#area').css('font-size', textHeight_s+"px");
 function chkMain() {
@@ -42,6 +43,13 @@ function chkMain() {
     cursorManager.setEndOfContenteditable($('#area'));
 
 }
+function updateInDocTitle() {
+    var docTitle = $('#dtitle').val();
+    $('#idtitle').html("<h1>"+docTitle+"</h1><br /><br />");
+    console.log('Updating doc title.')
+    return;
+}
+
 function addLevel() {
     insertHtmlAtCursor("<ul><li>");
     currLevel++;
@@ -60,28 +68,53 @@ function delLevel() {
 }
 function saveArea() {
     // Saves text/outline onto MongoDB
-    var docTitle = $("#docTitle").val();
+    var docTitle = $("#dtitle").val();
+    var docContent = $("#area").html();
     var request = $.ajax({
         url: "/action-ep",
         type: "POST",
-        data: {action: "save", title: docTitle},
+        data: {'action': "save", 'title': docTitle, 'content': docContent, 'id': currID},
         dataType: "html"
     });
-    $("."+baseval).html('<span><i class="fa fa-spinner"></i></span>');
+    $("#save").html('<span><img src="/images/loading.gif" width="20px" height="20px">&nbsp;&nbsp; Saving...</span>');
     request.done(function(msg) {
-       if(msg=='success') {
-           $("."+baseval).html(' <span style="color:green"><i class="fa fa-check"></i>Enabled</span>');
+       if(msg=='OK') {
+           $("#save").html('<i class="fa fa-book">    Save</i>');
        }
-       else if(msg=='error') {
-           $("."+baseval).html(' <span style="color:orange"><i class="fa fa-ban"></i>Error, try again (reload page).</span>');
+       else if(msg.toLowerCase().search("error")>0) {
+           createAlert('<i class="fa fa-ban"></i> Alert</br >', msg);
+           $("#save").html('<i class="fa fa-book">    Save</i>');
        }
        else {
-           $("."+baseval).html(' <span style="color:red"><i class="fa fa-ban"></i>Error. Perhaps you were logged out or do not<br /> have sufficient permissions.</span>');
+           createAlert('<i class="fa fa-ban"></i> Alert</br >', "Generic unhandled error. Try again later. "+msg);
+           $("#save").html('<i class="fa fa-book">    Save</i>');
+
        }
     });
 
     request.fail(function(jqXHR, textStatus) {
-        $('#status').html(' <span style="color:red"><i class="fa fa-exclamation-circle"></i> An error occured. Try again</span>' + textstatus);
+        createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not reach server. Try again later.");
+        $("#save").html('<i class="fa fa-book">    Save</i>');
     });
+}
+function createPrint() {
+    var css = "@media print {
+                  body * {
+                    visibility: hidden;
+                  }
+                  #section-to-print, #section-to-print * {
+                    visibility: visible;
+                  }
+                  #section-to-print {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                  }
+              }";
+
+    var htmlCSS = "<html><head><style>"+css+"</style></head><body>"+$('#area').html()+"</body></html>";
+    // TODO: themes for printing and editing in general
+
+
 }
 // Also requires jQuery and Bootstrap JS

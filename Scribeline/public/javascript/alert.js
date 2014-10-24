@@ -3,5 +3,7 @@ function createAlert(title, content) {
       <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\
       <strong>'+title+'</strong>'+content+'\
     </div>';
-    $('#stA').append(alert); // Append to statusArea
+    $('#stA').hide();
+    $('#stA').append(alert);  // Append to statusArea
+    $('#stA').slideDown();
 }
