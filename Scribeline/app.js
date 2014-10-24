@@ -29,6 +29,7 @@ db.once('open', function callback () {
   console.log("Connected to MongoDB server");
 });
 var User = mongoose.model('User', { username: String, password: String, email: String });
+var Doc = mongoose.model('Doc');
 
 // var kitty = new Cat({ name: 'Zildjian' });
 /*
@@ -64,11 +65,35 @@ function genHandleError(res, err) {
 
 app.use('/', routes);
 
-app.post('/sync-ep', function(req, res) {
+app.post('/action-ep', function(req, res) {
     var username = req.session.username;
     if (!username) {
         res.end();
     }
+    var docTitle = req.param('docTitle');
+    var docContent = req.param('docContent');
+    if (!docTitle || docTitle.length<1 || !docContent || docContent.length<1) {
+        res.send('Error: Title/content cannot be blank. ');
+        res.end();
+        return;
+    }
+    if (docTitle.length>100) {
+        res.send('Error: Title must be shorter than 100 characters.');
+        res.end();
+        return;
+    }
+    // Save it!
+    var saveDoc = new Doc({ username: {title: docTitle, content: docContent}});
+
+    saveDoc.save(function (err) {
+      if (err) {
+          console.log("Error saving document: "+err);
+          res.send('Error while saving document. Try again later');
+      }
+    });
+    res.send("OK")
+    res.end();
+    return;
 });
 app.get('/start', function(req, res) {
   res.render('start', { title: 'Scribeline' });

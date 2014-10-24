@@ -2,11 +2,11 @@ extends layout
 
 block content
     div(class="pull-right")
-        a(href="/logout", tabindex="-1")
+        a(href="/logout")
             | Log Out
 
-    div(style="text-align:center", tabindex="-1")
-        a(href="/", tabindex="-1")
+    div(style="text-align:center")
+        a(href="/")
             img(src='/images/scribeline.png')
         br
         br
@@ -47,4 +47,7 @@ block content
         | });
         | shortcut.add("Ctrl+U",function() {
         | 	delLevel();
+        | });
+        | shortcut.add("Ctrl+S",function() {
+        | 	saveArea();
         | });

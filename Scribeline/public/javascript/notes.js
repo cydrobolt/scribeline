@@ -58,4 +58,30 @@ function delLevel() {
     cursorManager.setEndOfContenteditable($('#area'));
 
 }
+function saveArea() {
+    // Saves text/outline onto MongoDB
+    var docTitle = $("#docTitle").val();
+    var request = $.ajax({
+        url: "/action-ep",
+        type: "POST",
+        data: {action: "save", title: docTitle},
+        dataType: "html"
+    });
+    $("."+baseval).html('<span><i class="fa fa-spinner"></i></span>');
+    request.done(function(msg) {
+       if(msg=='success') {
+           $("."+baseval).html(' <span style="color:green"><i class="fa fa-check"></i>Enabled</span>');
+       }
+       else if(msg=='error') {
+           $("."+baseval).html(' <span style="color:orange"><i class="fa fa-ban"></i>Error, try again (reload page).</span>');
+       }
+       else {
+           $("."+baseval).html(' <span style="color:red"><i class="fa fa-ban"></i>Error. Perhaps you were logged out or do not<br /> have sufficient permissions.</span>');
+       }
+    });
+
+    request.fail(function(jqXHR, textStatus) {
+        $('#status').html(' <span style="color:red"><i class="fa fa-exclamation-circle"></i> An error occured. Try again</span>' + textstatus);
+    });
+}
 // Also requires jQuery and Bootstrap JS
