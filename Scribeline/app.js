@@ -90,7 +90,8 @@ app.use('/', routes);
 
 app.post('/action-ep', function(req, res) {
     var username = req.session.username;
-    if (req.param('action') == "save") {
+    action = req.param('action');
+    if (action == "save") {
         if (!username) {
             res.end();
             return;
@@ -155,10 +156,8 @@ app.post('/action-ep', function(req, res) {
         // Get all of the user's outlines
         try {
             Doc.find({ username: username }, function (err, dobj) {
-                var documentIDs = dobj._id;
-                var documentTitles = dobj.title;
-                console.log(documentIDs);
-                console.log(documentTitles);
+                console.log(dobj);
+                res.end();
             });
 
             res.end();

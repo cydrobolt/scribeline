@@ -1,3 +1,27 @@
+/*
+
+Scribeline Outline Editor
+http://github.com/cydrobolt/scribeline
+
+
+=======----------=========
+
+Copyright 2014 Chaoyi Zha
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+*/
+
 function setDocDate() {
     var language = window.navigator.userLanguage || window.navigator.language;
     var date = new Date;
@@ -25,6 +49,37 @@ function triggerAlert () {
     <li>Ctrl+B to <b>bolden</b></li>\
     </ul> '); // Located at /javascript/alert.js
 
+}
+function openDocModal() {
+    // Open a modal allowing user to select a document
+    var request = $.ajax({
+        url: "/action-ep",
+        type: "POST",
+        data: {'action': "getUserDocs"},
+        dataType: "html"
+    });
+    $("#open").html('<span><img src="/images/loading.gif" width="20px" height="20px">&nbsp;&nbsp; Opening Modal...</span>');
+    request.done(function(msg) {
+       if(msg=='OK') {
+           $("#open").html('<i class="fa fa-folder">    Open</i>');
+           createModal(msg);
+
+       }
+       else if(msg.toLowerCase().search("error")>0) {
+           createAlert('<i class="fa fa-ban"></i> Alert</br >', msg);
+           $("#open").html('<i class="fa fa-folder">    Open</i>');
+       }
+       else {
+           createAlert('<i class="fa fa-ban"></i> Alert</br >', "Generic unhandled error. Try again later. "+msg);
+           $("#open").html('<i class="fa fa-folder">    Open</i>');
+
+       }
+    });
+
+    request.fail(function(jqXHR, textStatus) {
+        createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not reach server. Try again later.");
+        $("#save").html('<i class="fa fa-folder">    Open</i>');
+    });
 }
 
 function getPrecedingNodeCursor() {
