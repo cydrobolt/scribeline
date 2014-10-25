@@ -1,3 +1,27 @@
+/*
+
+Scribeline Outline Editor
+http://github.com/cydrobolt/scribeline
+
+
+=======----------=========
+
+Copyright 2014 Chaoyi Zha
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+*/
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -5,7 +29,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var sanitizeHtml = require('sanitize-html');
@@ -74,17 +97,16 @@ app.post('/action-ep', function(req, res) {
         }
         var docTitle = req.param('title');
         var docContent = req.param('content');
-        var docID = req.param('id');
         var d_id_rep = req.param('id');
         if (!docTitle || docTitle.length<1 || !docContent || docContent.length<1) {
             res.send('Error: Title/content cannot be blank. ');
-            console.log(docTitle);
             res.end();
             return;
         }
-        if (!docID || docID.length<1 || docID.length>1000) {
+        if (!d_id_rep || d_id_rep.length<1 || d_id_rep.length>1000) {
             res.send('Error: Invalid ID.');
             res.end();
+            return;
         }
         if (docTitle.length>100) {
             res.send('Error: Title must be shorter than 100 characters.');
@@ -109,11 +131,11 @@ app.post('/action-ep', function(req, res) {
       try {
         d_id_rep = d_id_rep.replace(/[^a-z0-9]/gi,''); // Alphanum only
         docTitle = docTitle.replace(/[^a-z0-9 '_"@&^%$#!.,/]/gi,'');
-    }
-    catch (err) {
-        console.log(err);
-        return;
-    }
+        }
+        catch (err) {
+            console.log(err);
+            return;
+        }
         var saveDoc = new Doc({username: username, title: docTitle, content: docContent});
         var upsertDoc = saveDoc.toObject();
         delete upsertDoc._id;
@@ -122,20 +144,30 @@ app.post('/action-ep', function(req, res) {
               console.log("Error saving document: "+err);
               res.send('Error while saving document. Try again later');
           }
-      });*/
-  Doc.update({ _id: d_id_rep }, upsertDoc, {upsert: true}, function(err) {/*res.send('Error: Server cannot connect to database.');res.end();*/});
-        res.send("OK")
+        });*/
+    Doc.update({ _id: d_id_rep }, upsertDoc, {upsert: true}, function(err) {/*res.send('Error: Server cannot connect to database.');res.end();return;*/});
+        res.send("OK");
         res.end();
         return;
     }
     else if (action == "getUserDocs") {
+        var username = req.session.username;
         // Get all of the user's outlines
         try {
+            Doc.find({ username: username }, function (err, dobj) {
+                var documentIDs = dobj._id;
+                var documentTitles = dobj.title;
+                console.log(documentIDs);
+                console.log(documentTitles);
+            });
 
+            res.end();
+            return;
         }
         catch (err) {
             res.send('No documents found. Perhaps you would like to create one?');
             res.end();
+            return;
         }
     }
     else {
@@ -154,11 +186,18 @@ app.post('/signup', function(req, res) {
   //res.send("Username: "+username+" <br /> Password: "+password+"<br />Email :"+email);
   var usernamea = username.replace(/[^a-z0-9]/gi,'');
   if (username.length != usernamea.length) {
-      res.render('signup', {flash: "Only alphanumeric characters may be used in usernames."})
+      res.render('start', {flash: "Only alphanumeric characters may be used in usernames."});
+      res.end();
+      return;
+  }
+  var emaila = email.replace(/[^a-z0-9@._-]/gi,'');
+  if (email.length != emaila.length) {
+      res.render('start', {flash: "Invalid email. "});
+      res.end();
       return;
   }
 
-  var newUser = new User({ username: usernamea, password: password,email: email });
+  var newUser = new User({ username: usernamea, password: password,email: emaila });
 
   newUser.save(function (err) {
     if (err) {
@@ -187,6 +226,7 @@ app.get('/signin', function(req, res) {
 });
 app.get('/logout', function(req, res) {
     req.session.username = null;
+    delete req.session.username;
     res.writeHead(301,
          {Location: '/'}
     );
@@ -196,6 +236,14 @@ app.get('/logout', function(req, res) {
 app.get('/plogin', function(req, res) {
     res.writeHead(301,
          {Location: '/signin'}
+    );
+    res.end();
+});
+app.get('/set-theme', function(req, res) {
+    // TODO
+    var theme = req.query.theme;
+    res.writeHead(301,
+         {Location: '/'}
     );
     res.end();
 });
