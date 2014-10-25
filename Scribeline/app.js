@@ -66,8 +66,8 @@ function genHandleError(res, err) {
 app.use('/', routes);
 
 app.post('/action-ep', function(req, res) {
+    var username = req.session.username;
     if (req.param('action') == "save") {
-        var username = req.session.username;
         if (!username) {
             res.end();
             return;
@@ -127,6 +127,16 @@ app.post('/action-ep', function(req, res) {
         res.send("OK")
         res.end();
         return;
+    }
+    else if (action == "getUserDocs") {
+        // Get all of the user's outlines
+        try {
+
+        }
+        catch (err) {
+            res.send('No documents found. Perhaps you would like to create one?');
+            res.end();
+        }
     }
     else {
         res.send("Invalid action");

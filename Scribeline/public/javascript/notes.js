@@ -1,3 +1,19 @@
+function setDocDate() {
+    var language = window.navigator.userLanguage || window.navigator.language;
+    var date = new Date;
+    var options = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    };
+    var formatted_date = date.toLocaleDateString(language, options);
+    $('#iddate').html('<em><b>'+formatted_date+'</b></em><br /><br />');
+}
+window.onload = function() { // Doing it the old fashioned non-jQuery way
+    setDocDate(); // Set date on new doc
+    var autosave = window.setInterval(autoSaveArea, 60000); // Start autosaver, every min
+}
 function triggerAlert () {
     createAlert("Tip<br />", 'Welcome to Scribeline Editor! To add a layer, press Ctrl+Y.\
     To remove a layer, simply press Ctrl+U. Save as you go,\
@@ -36,10 +52,12 @@ $('#area').css('font-size', textHeight_s+"px");
 function chkMain() {
     console.log('chkMain called!');
     if (currLevel>0) {
-        $('#area').append('</li><li>');
+        cursorPasteHTML("</li><li id='chkmaincr'>");
+        console.log('lied');
     }
     else {
-        $("#area").append('<br />');
+        cursorPasteHTML("<br />");
+        console.log('bred')
     }
     height += textHeight;
     $('#area').css('height', height+"px")
@@ -48,12 +66,13 @@ function chkMain() {
 }
 function updateInDocTitle() {
     var docTitle = $('#dtitle').val();
-    $('#idtitle').html("<h1>"+docTitle+"</h1><br /><br />");
+    $('#idtitle').html("<h1>"+docTitle+"</h1><br />");
     console.log('Updating doc title.')
     return;
 }
 
 function addLevel() {
+    //cursorPasteHTML('<ul><li>');
     insertHtmlAtCursor("<ul><li>");
     currLevel++;
     cursorManager.setEndOfContenteditable($('#area'));
@@ -69,6 +88,7 @@ function delLevel() {
     cursorManager.setEndOfContenteditable($('#area'));
 
 }
+
 function saveArea() {
     // Saves text/outline onto MongoDB
     var docTitle = $("#dtitle").val();
@@ -83,6 +103,7 @@ function saveArea() {
     request.done(function(msg) {
        if(msg=='OK') {
            $("#save").html('<i class="fa fa-book">    Save</i>');
+           stopAutoSave = false;
        }
        else if(msg.toLowerCase().search("error")>0) {
            createAlert('<i class="fa fa-ban"></i> Alert</br >', msg);
@@ -100,6 +121,64 @@ function saveArea() {
         $("#save").html('<i class="fa fa-book">    Save</i>');
     });
 }
+var autoSaveAlerted = false;
+var stopAutoSave; // Stop autosaving if something is broken
+function autoSaveArea() {
+    if (stopAutoSave == true) {
+        return; // Wait until a successful save before autosaving
+        //          if an error occured
+    }
+    // Saves text/outline onto MongoDB
+    var docTitle = $("#dtitle").val();
+    var docContent = $("#area").html();
+    var request = $.ajax({
+        url: "/action-ep",
+        type: "POST",
+        data: {'action': "save", 'title': docTitle, 'content': docContent, 'id': currID},
+        dataType: "html"
+    });
+    $("#save").html('<span><img src="/images/loading.gif" width="20px" height="20px">&nbsp;&nbsp; Autosaving...</span>');
+    request.done(function(msg) {
+       if(msg=='OK') {
+           $("#save").html('<i class="fa fa-book">    Save</i>');
+           stopAutoSave = false; // Turn back on autosaving
+
+       }
+       else if(msg.toLowerCase().search("error")>0) {
+           createAlert('<i class="fa fa-ban"></i> Alert</br >', msg);
+           $("#save").html('<i class="fa fa-book">    Save</i>');
+           autoSaveAlerted = true;
+           stopAutoSave = true;
+       }
+       else {
+           createAlert('<i class="fa fa-ban"></i> Alert</br >', "Generic unhandled error. Try again later. "+msg+" <br />Autosave <span style='color:red'>paused</span> until successful manual save.");
+           $("#save").html('<i class="fa fa-book">    Save</i>');
+           autoSaveAlerted = true;
+           stopAutoSave = true;
+
+       }
+    });
+
+    request.fail(function(jqXHR, textStatus) {
+        createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not reach server. Try again later. Autosave <span style='color:red'>paused</span> until successful manual save.");
+        $("#save").html('<i class="fa fa-book">    Save</i>');
+        autoSaveAlerted = true;
+        stopAutoSave = true;
+
+    });
+}
+
+function newArea() {
+    $('#dtitle').val("");
+    $('#area').html('<div id="idtitle"></div>\
+    <div id="iddate"></div>\
+    Start typing here...');
+    setDocDate(); // set doc date
+    var currID = guid(); // new doc ID
+    createAlert('', "New document created!");
+}
+
+
 function createPrint() {
     var css = "@media print {\
                   body * {\

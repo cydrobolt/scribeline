@@ -1,4 +1,4 @@
-function cursorPasteHTML(html, selectPastedContent) {
+function cursorPasteHTML(html) {
     selectPastedContent = false;
     var sel, range;
     if (window.getSelection) {

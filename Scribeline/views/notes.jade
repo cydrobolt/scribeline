@@ -14,7 +14,7 @@ block content
             i(class="fa fa-book")
                 |     Save
         &nbsp; &nbsp; &nbsp;
-        a(class='btn btn-danger', href="#")
+        a(class='btn btn-danger', href="#", onclick="newArea();")
             i(class="fa fa-file-text")
             |     New
         &nbsp; &nbsp; &nbsp;
@@ -28,13 +28,15 @@ block content
             br
             div(style="width:100%;height:450px;text-align:left", name="area", id="area", contenteditable="true", TabIndex = "-1", class="form-control")
                 | <div id="idtitle"></div>
+                | <div id="iddate"></div>
                 | Hello! Press Ctrl+S to save, Ctrl+Y at the end of a line to add an outline level, and Enter (twice) to
                 | go back a level.
+    script(src="/javascript/guid.js")
+    script(src="/javascript/cursorctl.js")
     script(src="/javascript/notes.js")
     script(src="/javascript/alert.js")
     script(src="/javascript/shortcut.js")
-    script(src="/javascript/cursorctl.js")
-    script(src="/javascript/guid.js")
+
     script
         | shortcut.add("Ctrl+Y",function() {
         |   addLevel();
