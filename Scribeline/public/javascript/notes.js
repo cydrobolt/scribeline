@@ -60,25 +60,37 @@ function openDocModal() {
     });
     $("#open").html('<span><img src="/images/loading.gif" width="20px" height="20px">&nbsp;&nbsp; Opening Modal...</span>');
     request.done(function(msg) {
-       if(msg=='OK') {
-           $("#open").html('<i class="fa fa-folder">    Open</i>');
-           createModal(msg);
 
-       }
-       else if(msg.toLowerCase().search("error")>0) {
-           createAlert('<i class="fa fa-ban"></i> Alert</br >', msg);
-           $("#open").html('<i class="fa fa-folder">    Open</i>');
-       }
-       else {
-           createAlert('<i class="fa fa-ban"></i> Alert</br >', "Generic unhandled error. Try again later. "+msg);
-           $("#open").html('<i class="fa fa-folder">    Open</i>');
+       $("#open").html('<i class="fa fa-folder">    Open</i>');
+       var docObj = JSON.parse(msg); // Parse into object
+       // msg is a Map of Mongoose's output
+       window.docObj = JSON.parse(msg);
+        var docCompilation = ""; // Init String
+        var id, title, items;
+        items = 0;
+        for (variable in docObj) {
+            id = docObj[variable]._id;
+            title = docObj[variable].title;
+            if(title == undefined) {
+                continue;
+            }
+            items++;
+            docCompilation += '<table class="table table-hover">\
+            <thead><tr><th>Document Title</th><th>Last Modified</th></thead><tbody>';
+            docCompilation += "<tr><td><a href='#' id='"+id+"' onclick='openDoc();'>"+title+"</a></td>"+"<td>14/14/2014</td>"+"</tr>";
+            // For each object, append to docCompilation
+            docCompilation += "</tbody></table>";
+        }
+        if (items == 0) {
+            docCompilation = "<p>You don't seem to have any documents. Why don't you create one?</p>";
+        }
+       createModal("Your Docs", docCompilation);
 
-       }
     });
 
     request.fail(function(jqXHR, textStatus) {
         createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not reach server. Try again later.");
-        $("#save").html('<i class="fa fa-folder">    Open</i>');
+        $("#open").html('<i class="fa fa-folder">    Open</i>');
     });
 }
 

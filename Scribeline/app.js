@@ -156,12 +156,12 @@ app.post('/action-ep', function(req, res) {
         // Get all of the user's outlines
         try {
             Doc.find({ username: username }, function (err, dobj) {
-                console.log(dobj);
+                var map = dobj.map(function(s){return {'_id':s._id, 'title':s.title}});
+                map = JSON.stringify(map);
+                res.send(map);
                 res.end();
+                return;
             });
-
-            res.end();
-            return;
         }
         catch (err) {
             res.send('No documents found. Perhaps you would like to create one?');
