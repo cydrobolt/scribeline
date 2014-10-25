@@ -31,7 +31,6 @@ function getCurrLevel (item) {
 var currLevel = 0; // WILL BE DEPRECATED IN FAVOR OF ANCHOR NODE AND PARENT COUNTER
 var height = 450;
 var textHeight_s = 5; // Actual character height
-var currID = guid(); // Assume new doc, generate currID
 var textHeight = textHeight_s + 5; // Approx line height
 $('#area').css('font-size', textHeight_s+"px");
 function chkMain() {

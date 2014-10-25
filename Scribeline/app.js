@@ -75,12 +75,16 @@ app.post('/action-ep', function(req, res) {
         var docTitle = req.param('title');
         var docContent = req.param('content');
         var docID = req.param('id');
+        var d_id_rep = req.param('id');
         if (!docTitle || docTitle.length<1 || !docContent || docContent.length<1) {
             res.send('Error: Title/content cannot be blank. ');
             console.log(docTitle);
-            console.log('\n'+docContent)
             res.end();
             return;
+        }
+        if (!docID || docID.length<1 || docID.length>1000) {
+            res.send('Error: Invalid ID.');
+            res.end();
         }
         if (docTitle.length>100) {
             res.send('Error: Title must be shorter than 100 characters.');
@@ -102,17 +106,24 @@ app.post('/action-ep', function(req, res) {
           allowedSchemes: [ 'http', 'https', 'ftp', 'mailto' ]
           }
       ); // Sanitize
-        var docID = docID.replace(/[^a-z0-9]/gi,''); // Alphanum only
-        var docTitle = docTitle.replace(/[^a-z0-9 '_"@&^%$#!.,/]/gi,'');
-
-        var saveDoc = new Doc({ _id: docID, username: username, title: docTitle, content: docContent});
-
-        saveDoc.save(function (err) {
+      try {
+        d_id_rep = d_id_rep.replace(/[^a-z0-9]/gi,''); // Alphanum only
+        docTitle = docTitle.replace(/[^a-z0-9 '_"@&^%$#!.,/]/gi,'');
+    }
+    catch (err) {
+        console.log(err);
+        return;
+    }
+        var saveDoc = new Doc({username: username, title: docTitle, content: docContent});
+        var upsertDoc = saveDoc.toObject();
+        delete upsertDoc._id;
+        /*saveDoc.save(function (err) {
           if (err) {
               console.log("Error saving document: "+err);
               res.send('Error while saving document. Try again later');
           }
-        });
+      });*/
+  Doc.update({ _id: d_id_rep }, upsertDoc, {upsert: true}, function(err) {/*res.send('Error: Server cannot connect to database.');res.end();*/});
         res.send("OK")
         res.end();
         return;

@@ -9,3 +9,4 @@ var guid = (function() {
            s4() + '-' + s4() + s4() + s4();
   };
 })();
+var currID = guid(); // Assume new doc, generate currID
