@@ -78,7 +78,7 @@ function openDocModal() {
             }
             items++;
 
-            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick='openDoc('"+id+"', '"+title+"');'>"+title+"</a></td>"+"<td>14/14/2014</td>"+"</tr>";
+            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+title+"</a></td>"+"<td>14/14/2014</td>"+"</tr>";
         }
         docCompilation += "</tbody></table>";
         if (items == 0) {
@@ -113,9 +113,13 @@ function openDoc(theID, theTitle) {
             currID = docToOpenID;
             $('#area').html(msg);
             console.log(msg);
+            $("#open").html('<i class="fa fa-folder">    Open</i>');
+
         }
         else {
             createAlert('Could not open document. Maybe it is not shared with you, or an error occured. Try again later.');
+            $("#open").html('<i class="fa fa-folder">    Open</i>');
+
         }
     });
 
