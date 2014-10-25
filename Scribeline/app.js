@@ -102,8 +102,10 @@ app.post('/action-ep', function(req, res) {
           allowedSchemes: [ 'http', 'https', 'ftp', 'mailto' ]
           }
       ); // Sanitize
+        var docID = docID.replace(/[^a-z0-9]/gi,''); // Alphanum only
+        var docTitle = docTitle.replace(/[^a-z0-9 '_"@&^%$#!.,/]/gi,'');
 
-        var saveDoc = new Doc({ _id: docID,username: username, title: docTitle, content: docContent});
+        var saveDoc = new Doc({ _id: docID, username: username, title: docTitle, content: docContent});
 
         saveDoc.save(function (err) {
           if (err) {
@@ -129,9 +131,13 @@ app.post('/signup', function(req, res) {
   var password = req.param('password');
   var email = req.param('email');
   //res.send("Username: "+username+" <br /> Password: "+password+"<br />Email :"+email);
+  var usernamea = username.replace(/[^a-z0-9]/gi,'');
+  if (username.length != usernamea.length) {
+      res.render('signup', {flash: "Only alphanumeric characters may be used in usernames."})
+      return;
+  }
 
-
-  var newUser = new User({ username: username, password: password,email: email });
+  var newUser = new User({ username: usernamea, password: password,email: email });
 
   newUser.save(function (err) {
     if (err) {

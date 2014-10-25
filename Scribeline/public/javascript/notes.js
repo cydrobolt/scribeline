@@ -11,20 +11,24 @@ function triggerAlert () {
 
 }
 
-function insertTextAtCursor(text) {
-    var sel, range, html;
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.getRangeAt && sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            range.deleteContents();
-            range.insertNode( document.createTextNode(text) );
-        }
-    } else if (document.selection && document.selection.createRange) {
-        document.selection.createRange().text = text;
-    }
+function getPrecedingNodeCursor() {
+    // Gets node preceding the cursor in #area
+    var selection
+    if (window.getSelection){
+        selection = window.getSelection();}
+    else if (document.selection && document.selection.type != "Control"){
+        selection = document.selection;}
+
+    var anchor_node = selection.anchorNode; //current node on which cursor is positioned
+    var previous_node = anchor_node.previousSibling;
+    var next_node = anchor_node.nextSibling;
+    return previous_node;
 }
-var currLevel = 0;
+
+function getCurrLevel (item) {
+    $(item).parents('ul').length; // $(item) might need to be replaced with item
+}
+var currLevel = 0; // WILL BE DEPRECATED IN FAVOR OF ANCHOR NODE AND PARENT COUNTER
 var height = 450;
 var textHeight_s = 5; // Actual character height
 var currID = guid(); // Assume new doc, generate currID
@@ -98,23 +102,24 @@ function saveArea() {
     });
 }
 function createPrint() {
-    var css = "@media print {
-                  body * {
-                    visibility: hidden;
-                  }
-                  #section-to-print, #section-to-print * {
-                    visibility: visible;
-                  }
-                  #section-to-print {
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                  }
-              }";
+    var css = "@media print {\
+                  body * {\
+                    visibility: hidden;\
+                }\
+                  #section-to-print, #section-to-print * {\
+                    visibility: visible;\
+                }\
+                  #section-to-print {\
+                    position: absolute;\
+                    left: 0;\
+                    top: 0;\
+                }\
+            }";
 
     var htmlCSS = "<html><head><style>"+css+"</style></head><body>"+$('#area').html()+"</body></html>";
     // TODO: themes for printing and editing in general
 
 
 }
+
 // Also requires jQuery and Bootstrap JS
