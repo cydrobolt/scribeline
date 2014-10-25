@@ -169,6 +169,45 @@ app.post('/action-ep', function(req, res) {
             return;
         }
     }
+    else if (action == "getDoc") {
+        var username = req.session.username;
+        var toGetID = req.param('id');
+        console.log(toGetID);
+
+        // Get corresponding document
+        try {
+            Doc.findOne({ _id: toGetID, username: username}, 'content', function (err, dobj) {
+                if (err) {
+                    res.send('ERROR');
+                    res.end();
+                    return;
+                }
+                try {
+                    var content = dobj.content;
+
+                }
+                catch (err) {
+                    res.send('ERROR');
+                    res.end();
+                    return;
+                }
+                if (!content || content.length<1) {
+                    res.send('ERROR');
+                    res.end();
+                    return;
+                }
+                res.send(content);
+                res.end();
+                return;
+            });
+        }
+        catch (err) {
+            console.log(err);
+            res.send(err);
+            res.end();
+            return;
+        }
+    }
     else {
         res.send("Invalid action");
         res.end();

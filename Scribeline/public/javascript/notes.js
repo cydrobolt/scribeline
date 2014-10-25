@@ -68,6 +68,8 @@ function openDocModal() {
         var docCompilation = ""; // Init String
         var id, title, items;
         items = 0;
+        docCompilation += '<table class="table table-hover">\
+        <thead><tr><th>Document Title</th><th>Last Modified</th></thead><tbody>';
         for (variable in docObj) {
             id = docObj[variable]._id;
             title = docObj[variable].title;
@@ -75,12 +77,10 @@ function openDocModal() {
                 continue;
             }
             items++;
-            docCompilation += '<table class="table table-hover">\
-            <thead><tr><th>Document Title</th><th>Last Modified</th></thead><tbody>';
-            docCompilation += "<tr><td><a href='#' id='"+id+"' onclick='openDoc();'>"+title+"</a></td>"+"<td>14/14/2014</td>"+"</tr>";
-            // For each object, append to docCompilation
-            docCompilation += "</tbody></table>";
+
+            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick='openDoc('"+id+"', '"+title+"');'>"+title+"</a></td>"+"<td>14/14/2014</td>"+"</tr>";
         }
+        docCompilation += "</tbody></table>";
         if (items == 0) {
             docCompilation = "<p>You don't seem to have any documents. Why don't you create one?</p>";
         }
@@ -93,7 +93,37 @@ function openDocModal() {
         $("#open").html('<i class="fa fa-folder">    Open</i>');
     });
 }
+function openDoc(theID, theTitle) {
 
+    var docToOpenID = theID;
+    var docToOpenTitle = theTitle;
+
+    console.log(this.id);
+    var request = $.ajax({
+        url: "/action-ep",
+        type: "POST",
+        data: {'action': "getDoc", "id": docToOpenID},
+        dataType: "html"
+    });
+    $("#open").html('<span><img src="/images/loading.gif" width="20px" height="20px">&nbsp;&nbsp; Opening Document...</span>');
+    request.done(function(msg) {
+        if (msg != "ERROR") {
+            // Update Area
+            $('#dtitle').val(docToOpenTitle);
+            currID = docToOpenID;
+            $('#area').html(msg);
+            console.log(msg);
+        }
+        else {
+            createAlert('Could not open document. Maybe it is not shared with you, or an error occured. Try again later.');
+        }
+    });
+
+    request.fail(function(jqXHR, textStatus) {
+        createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not reach server. Try again later.");
+        $("#open").html('<i class="fa fa-folder">    Open</i>');
+    });
+}
 function getPrecedingNodeCursor() {
     // Gets node preceding the cursor in #area
     var selection
