@@ -26,7 +26,7 @@ function createModal(title, content) {
             #{body}\
           </div>\
           <div class="modal-footer">\
-            <button type="button" class="btn btn-default" onclick="$(\'#SLModal\').remove();" data-dismiss="modal">Close</button>\
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\
           </div>\
         </div>\
       </div>\
@@ -36,6 +36,9 @@ function createModal(title, content) {
     modal = modal.replace("#{body}", content);
     $('#stA').append(modal);
     $('#SLModal').modal();
+    $( "body" ).delegate( "#SLModal", "hidden.bs.modal", function () {
+		$('#SLModal').remove(); // Get rid of the modal so that users can see refreshed content
+	});
 
     return modal;
 }

@@ -78,7 +78,7 @@ function openDocModal() {
             }
             items++;
 
-            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');$('#SLModal').remove();\">"+title+"</a></td>"+"<td>14/14/2014</td>"+"</tr>";
+            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+title+"</a></td>"+"<td>14/14/2014</td>"+"</tr>";
         }
         docCompilation += "</tbody></table>";
         if (items == 0) {
