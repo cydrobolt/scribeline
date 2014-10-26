@@ -33,6 +33,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var sanitizeHtml = require('sanitize-html');
 var session = require('express-session');
+var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var app = express();
 /*
@@ -50,7 +51,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
   console.log("Connected to MongoDB server");
 });
-var User = mongoose.model('User', { username: String, password: String, email: String });
+var User = mongoose.model('User', { username: String, password: String, email: String, iters: Number, salt: String });
 var Doc = mongoose.model('Doc', {_id: String, username: String, title: String, content: String});
 
 
@@ -220,6 +221,8 @@ app.get('/start', function(req, res) {
 app.post('/signup', function(req, res) {
   var username = req.param('username');
   var password = req.param('password');
+
+
   var email = req.param('email');
   //res.send("Username: "+username+" <br /> Password: "+password+"<br />Email :"+email);
   var usernamea = username.replace(/[^a-z0-9]/gi,'');
@@ -234,15 +237,33 @@ app.post('/signup', function(req, res) {
       res.end();
       return;
   }
+  if (password.length>90) {
+      res.render('start', {flash: "Password length must be under 90."});
+      res.end();
+      return;
+  }
 
-  var newUser = new User({ username: usernamea, password: password,email: emaila });
 
-  newUser.save(function (err) {
-    if (err) {
-		console.log("Error saving user: "+err);
-	}
-  });
-  res.render('signin', { flash: "Registered!" });
+  var salt = bcrypt.genSaltSync(10);
+
+  var hashedpw = bcrypt.hashSync(password, salt);
+  var newUser = new User({ username: usernamea, password: hashedpw, email: emaila, salt: salt });
+    User.count({username: username}, function (err, count) {
+      if (!count) {
+        newUser.save(function (err) {
+          if (err) {
+              console.log("Error saving user: "+err);
+          }
+          res.render('signin', { flash: "Registered!" });
+        });
+      }
+      else {
+        res.render('start', {flash: "User already registered."});
+        res.end();
+        return;
+      }
+    });
+
 
 });
 
@@ -263,6 +284,7 @@ app.get('/signin', function(req, res) {
 	res.render('signin');
 });
 app.get('/logout', function(req, res) {
+    req.session.username = "";
     req.session.username = null;
     delete req.session.username;
     res.writeHead(301,
@@ -289,11 +311,12 @@ app.post('/plogin', function(req, res) {
 	var username = req.param('username');
 	var password_s = req.param('password');
 
-	// find each person with a last name matching 'Ghost', selecting the `name` and `occupation` fields
-	User.findOne({ 'username': username }, 'password', function (err, user) {
+	User.findOne({ 'username': username }, 'password iters salt', function (err, user) {
 	  if (err) return genHandleError(res, err);
       try {
-    	  if (user.password == password_s) {
+          var salt = user.salt;
+          //var hashedpw = bcrypt.hashSync(password_s, salt);
+    	  if (bcrypt.compareSync(password_s, user.password)) {
     		  // Woot, correct password
     		  req.session.username = username;
     		  res.writeHead(301,
@@ -301,6 +324,11 @@ app.post('/plogin', function(req, res) {
         	  );
     	      res.end();
     	  }
+          else {
+              res.render('signin', {flash: "Invalid User or Password"});
+              res.end();
+              return;
+          }
       }
       catch (err) {
           res.render('signin', {flash: "Invalid User or Password"});

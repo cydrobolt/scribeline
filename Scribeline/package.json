@@ -16,6 +16,7 @@
     "cookie-session": "~1.0.2",
     "sanitize-html": "~1.4.3",
     "jquery": "~2.1.1",
-    "mongoose": "~3.8.18"
+    "mongoose": "~3.8.18",
+    "bcrypt-nodejs": "0.0.3"
   }
 }
