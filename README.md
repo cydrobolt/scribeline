@@ -12,7 +12,9 @@ Simplify your life by making note-taking and outline creation second nature with
 #####Scribeline is not ready for production
 For instance,
 
- - No password hashing
+ - No configuration files for production
+ - Default settings expose your stacktraces
+ - Secret key is unsafe by default
  - Still in heavy development and things may be buggy
 
  
