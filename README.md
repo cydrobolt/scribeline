@@ -3,6 +3,20 @@ Scribeline
 
 Simplify your life by making note-taking and outline creation second nature with Scribeline.
 
+###Dependencies:
+ - Node.js
+ - Express 4 (included in Node modules, listed in package.json)
+ - MongoDB (not included)
+ - NPM dependencies are mostly included in node_modules, but the rest is in package.json
+
+#####Scribeline is not ready for production
+For instance,
+
+ - No password hashing
+ - Still in heavy development and things may be buggy
+
+ 
+
 ```
 Copyright 2014 Chaoyi Zha
 
