@@ -64,6 +64,7 @@ function openDocModal() {
        $("#open").html('<i class="fa fa-folder">    Open</i>');
        var docObj = JSON.parse(msg); // Parse into object
        // msg is a Map of Mongoose's output
+       delete docCompilation;
         var docCompilation = ""; // Init String
         var id, title, items;
         items = 0;
@@ -77,7 +78,7 @@ function openDocModal() {
             }
             items++;
 
-            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+title+"</a></td>"+"<td>14/14/2014</td>"+"</tr>";
+            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');$('SLModal').delete();\">"+title+"</a></td>"+"<td>14/14/2014</td>"+"</tr>";
         }
         docCompilation += "</tbody></table>";
         if (items == 0) {
