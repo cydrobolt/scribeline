@@ -148,16 +148,16 @@ function getCurrLevel (item) {
 var currLevel = 0; // WILL BE DEPRECATED IN FAVOR OF ANCHOR NODE AND PARENT COUNTER
 var height = 450;
 var textHeight_s = 5; // Actual character height
-var textHeight = textHeight_s + 5; // Approx line height
+var textHeight = textHeight_s + 10; // Approx line height
 $('#area').css('font-size', textHeight_s+"px");
 function chkMain() {
     console.log('chkMain called!');
     if (currLevel>0) {
-        cursorPasteHTML("</li><li id='chkmaincr'>");
+        insertHtmlAtCursor("</li><li id='chkmaincr'>");
         console.log('lied');
     }
     else {
-        cursorPasteHTML("<br />");
+        insertHtmlAtCursor("<br />");
         console.log('bred')
     }
     height += textHeight;
