@@ -26,7 +26,7 @@ function createModal(title, content) {
             #{body}\
           </div>\
           <div class="modal-footer">\
-            <button type="button" class="btn btn-default" onclick="$(\'SLModal\').delete();" data-dismiss="modal">Close</button>\
+            <button type="button" class="btn btn-default" onclick="$(\'#SLModal\').remove();" data-dismiss="modal">Close</button>\
           </div>\
         </div>\
       </div>\
