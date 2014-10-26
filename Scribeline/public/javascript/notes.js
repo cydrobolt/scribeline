@@ -64,7 +64,6 @@ function openDocModal() {
        $("#open").html('<i class="fa fa-folder">    Open</i>');
        var docObj = JSON.parse(msg); // Parse into object
        // msg is a Map of Mongoose's output
-       window.docObj = JSON.parse(msg);
         var docCompilation = ""; // Init String
         var id, title, items;
         items = 0;
@@ -275,7 +274,7 @@ function newArea() {
     <div id="iddate"></div>\
     Start typing here...');
     setDocDate(); // set doc date
-    var currID = guid(); // new doc ID
+    currID = guid(); // new doc ID
     createAlert('', "New document created!");
 }
 
