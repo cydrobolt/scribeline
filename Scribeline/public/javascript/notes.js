@@ -153,11 +153,11 @@ $('#area').css('font-size', textHeight_s+"px");
 function chkMain() {
     console.log('chkMain called!');
     if (currLevel>0) {
-        insertHtmlAtCursor("</li><li id='chkmaincr'>");
+        cursorPasteHTML("</li><li id='chkmaincr'>");
         console.log('lied');
     }
     else {
-        insertHtmlAtCursor("<br />");
+        cursorPasteHTML("<br />");
         console.log('bred')
     }
     height += textHeight;
