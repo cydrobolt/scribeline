@@ -135,7 +135,7 @@ app.post('/action-ep', function(req, res) {
         docTitle = docTitle.replace(/[^a-z0-9 '_"@&^%$#!.,/]/gi,'');
         }
         catch (err) {
-            console.log(err);
+            res.render('error', {error: "Server error. Try again later."});
             return;
         }
         var saveDoc = new Doc({username: username, title: docTitle, content: docContent});
@@ -155,7 +155,6 @@ app.post('/action-ep', function(req, res) {
     else if (action == "deleteUserDoc") {
         var username = req.session.username;
         var d_id = req.param("id");
-        console.log(username+d_id);
         try {
             Doc.remove({ _id: d_id, username: username }, function (err) {
                 if (err) {
@@ -197,7 +196,6 @@ app.post('/action-ep', function(req, res) {
     else if (action == "getDoc") {
         var username = req.session.username;
         var toGetID = req.param('id');
-        console.log(toGetID);
 
         // Get corresponding document
         try {
@@ -227,7 +225,6 @@ app.post('/action-ep', function(req, res) {
             });
         }
         catch (err) {
-            console.log(err);
             res.send(err);
             res.end();
             return;
@@ -276,7 +273,7 @@ app.post('/signup', function(req, res) {
       if (!count) {
         newUser.save(function (err) {
           if (err) {
-              console.log("Error saving user: "+err);
+              res.render('signin', {flash: "Could not register. Try again later. "});
           }
           res.render('signin', { flash: "Registered!" });
         });

@@ -22,6 +22,14 @@ limitations under the License.
 
 */
 
+/* CONFIG */
+
+var currLevel = 0; // WILL BE DEPRECATED IN FAVOR OF ANCHOR NODE AND PARENT COUNTER
+var height = 450;
+var textHeight_s = 5; // Actual character height
+var textHeight = textHeight_s + 10; // Approx line height
+
+
 function setDocDate() {
     var language = window.navigator.userLanguage || window.navigator.language;
     var date = new Date;
@@ -50,6 +58,9 @@ function triggerAlert () {
     </ul> '); // Located at /javascript/alert.js
 
 }
+$('#area').on('focus', function () {
+    $('#HoC').slideUp();
+});
 function openDocModal() {
     // Open a modal allowing user to select a document
     var request = $.ajax({
@@ -145,25 +156,27 @@ function getPrecedingNodeCursor() {
 function getCurrLevel (item) {
     $(item).parents('ul').length; // $(item) might need to be replaced with item
 }
-var currLevel = 0; // WILL BE DEPRECATED IN FAVOR OF ANCHOR NODE AND PARENT COUNTER
-var height = 450;
-var textHeight_s = 5; // Actual character height
-var textHeight = textHeight_s + 10; // Approx line height
+
+
 $('#area').css('font-size', textHeight_s+"px");
 function chkMain() {
     console.log('chkMain called!');
-    if (currLevel>0) {
-        cursorPasteHTML("</li><li id='chkmaincr'>");
-        console.log('lied');
+    try {
+        if (currLevel>0) {
+            cursorPasteHTML("</li><li id='chkmaincr'>");
+            console.log('lied');
+        }
+        else {
+            cursorPasteHTML("<br />");
+            console.log('bred')
+        }
     }
-    else {
-        cursorPasteHTML("<br />");
-        console.log('bred')
+    catch (err) {
+        console.log(err);
     }
     height += textHeight;
     $('#area').css('height', height+"px")
     cursorManager.setEndOfContenteditable($('#area'));
-
 }
 function updateInDocTitle() {
     var docTitle = $('#dtitle').val();
@@ -306,7 +319,7 @@ function newArea() {
     $('#dtitle').val("");
     $('#area').html('<div id="idtitle"></div>\
     <div id="iddate"></div>\
-    Start typing here...');
+    <div id="HoC">Start typing here...</div>');
     setDocDate(); // set doc date
     currID = guid(); // new doc ID
     createAlert('', "New document created!");
