@@ -222,7 +222,8 @@ function saveArea() {
         $("#save").html('<i class="fa fa-book">    Save</i>');
     });
 }
-function deleteDoc(docID) {
+function deleteDoc(tdocID) {
+
     // Saves text/outline onto MongoDB
     // $.blockUI({ message: '<img src="/images/loading.gif" />' });
     $('#SLModal').modal('hide'); // Close modal
@@ -231,7 +232,7 @@ function deleteDoc(docID) {
         var request = $.ajax({
             url: "/action-ep",
             type: "POST",
-            data: {'action': "deleteUserDoc", 'id': docID},
+            data: {'action': "deleteUserDoc", 'id': tdocID},
             dataType: "html"
         });
         request.done(function(msg) {

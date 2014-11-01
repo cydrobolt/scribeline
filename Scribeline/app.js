@@ -154,10 +154,10 @@ app.post('/action-ep', function(req, res) {
     }
     else if (action == "deleteUserDoc") {
         var username = req.session.username;
-        var docID = req.session.docid;
-
+        var d_id = req.param("id");
+        console.log(username+d_id);
         try {
-            Doc.remove({ username: username, _id: docID }, function (err) {
+            Doc.remove({ _id: d_id, username: username }, function (err) {
                 if (err) {
                     res.send("ERROR");
                     res.end();
