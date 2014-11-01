@@ -152,6 +152,30 @@ app.post('/action-ep', function(req, res) {
         res.end();
         return;
     }
+    else if (action == "deleteUserDoc") {
+        var username = req.session.username;
+        var docID = req.session.docid;
+
+        try {
+            Doc.remove({ username: username, _id: docID }, function (err) {
+                if (err) {
+                    res.send("ERROR");
+                    res.end();
+                    return;
+                }
+                else {
+                    res.send("OK");
+                    res.end();
+                    return;
+                }
+            });
+        }
+        catch (err) {
+            res.send('ERROR');
+            res.end();
+            return;
+        }
+    }
     else if (action == "getUserDocs") {
         var username = req.session.username;
         // Get all of the user's outlines

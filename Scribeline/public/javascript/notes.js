@@ -69,7 +69,7 @@ function openDocModal() {
         var id, title, items;
         items = 0;
         docCompilation += '<table class="table table-hover">\
-        <thead><tr><th>Document Title</th><th>Last Modified</th></thead><tbody>';
+        <thead><tr><th>Document Title</th><th>Last Modified</th><th>Delete</th></thead><tbody>';
         for (variable in docObj) {
             id = docObj[variable]._id;
             title = docObj[variable].title;
@@ -78,7 +78,7 @@ function openDocModal() {
             }
             items++;
 
-            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+title+"</a></td>"+"<td>14/14/2014</td>"+"</tr>";
+            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+title+"</a></td>"+"<td>14/14/2014</td>"+"<td><a href='#' class='btn btn-sm btn-danger' onclick=\"deleteDoc('"+id+"');\">Delete</a></tr>";
         }
         docCompilation += "</tbody></table>";
         if (items == 0) {
@@ -220,6 +220,38 @@ function saveArea() {
     request.fail(function(jqXHR, textStatus) {
         createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not reach server. Try again later.");
         $("#save").html('<i class="fa fa-book">    Save</i>');
+    });
+}
+function deleteDoc(docID) {
+    // Saves text/outline onto MongoDB
+    // $.blockUI({ message: '<img src="/images/loading.gif" />' });
+    $('#SLModal').modal('hide'); // Close modal
+    $('#SLModal').on('hidden.bs.modal', function (e) {
+        $('#SLModal').remove();
+        var request = $.ajax({
+            url: "/action-ep",
+            type: "POST",
+            data: {'action': "deleteUserDoc", 'id': docID},
+            dataType: "html"
+        });
+        request.done(function(msg) {
+           if(msg=='OK') {
+                 openDocModal(); // recreate docModal
+                 //$.unblockUI();
+                 console.log('OK');
+           }
+           else {
+               createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not delete. Perhaps you are not logged in or the document was not found.");
+               //$.unblockUI();
+               console.log('ERROR');
+           }
+
+
+        });
+
+        request.fail(function(jqXHR, textStatus) {
+            createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not reach server. Try again later.");
+        });
     });
 }
 var autoSaveAlerted = false;
