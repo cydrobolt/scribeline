@@ -39,13 +39,15 @@ var app = express();
 /*
  * Mongoose
 */
+var mongodb11 = process.env["MONGO_HOST"];
+
 var mongoose = require('mongoose');
 app.use(session({
     secret: 'lol cat'
 }));
 
 
-mongoose.connect('mongodb://localhost/scribeline');
+mongoose.connect('mongodb://'+mongodb11+'/scribeline');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
