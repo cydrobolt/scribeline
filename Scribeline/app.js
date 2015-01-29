@@ -39,7 +39,7 @@ var app = express();
 /*
  * Mongoose
 */
-var mongodb11 = process.env["MONGO_HOST"];
+var mongodb11 = process.env["MONGODB_HOST"];
 
 var mongoose = require('mongoose');
 app.use(session({
