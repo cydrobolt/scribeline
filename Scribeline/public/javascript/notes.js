@@ -3,10 +3,7 @@
 Scribeline Outline Editor
 http://github.com/cydrobolt/scribeline
 
-
-=======----------=========
-
-Copyright 2014 Chaoyi Zha
+Copyright 2015 Chaoyi Zha
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,12 +19,20 @@ limitations under the License.
 
 */
 
-/* CONFIG */
+CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
+CKEDITOR.config.forcePasteAsPlainText = false; // default so content won't be manipulated on load
+CKEDITOR.config.basicEntities = true;
+CKEDITOR.config.entities = true;
+CKEDITOR.config.entities_latin = false;
+CKEDITOR.config.entities_greek = false;
+CKEDITOR.config.entities_processNumerical = false;
+CKEDITOR.config.fillEmptyBlocks = function (element) {
+        return true; // leave like so
+};
 
-var currLevel = 0; // WILL BE DEPRECATED IN FAVOR OF ANCHOR NODE AND PARENT COUNTER
-var height = 450;
-var textHeight_s = 5; // Actual character height
-var textHeight = textHeight_s + 10; // Approx line height
+CKEDITOR.config.allowedContent = true; // don't filter my data
+
+CKEDITOR.inline('area');
 
 
 function setDocDate() {
@@ -45,22 +50,21 @@ function setDocDate() {
 window.onload = function() { // Doing it the old fashioned non-jQuery way
     setDocDate(); // Set date on new doc
     var autosave = window.setInterval(autoSaveArea, 60000); // Start autosaver, every min
-}
+    $('#area').on('focus', function () {
+        $('#HoC').slideUp();
+        $('#HoC').remove();
+    });
+};
+
 function triggerAlert () {
-    createAlert("Tip<br />", 'Welcome to Scribeline Editor! To add a layer, press Ctrl+Y.\
-    To remove a layer, simply press Ctrl+U. Save as you go,\
-    save as or open a new file to get started right away! <br/>\
-    <b>Keybinds:</b>\
-    <ul>\
-    <li>Ctrl+E to reduce area size</li>\
-    <li>Ctrl+S to save</li>\
-    <li>Ctrl+B to <b>bolden</b></li>\
+    createAlert("<b>Tip</b><br /><br />", 'Welcome to the Scribeline Editor!<br />\
+    Save as you type, or open a new file to get started right away! <br/>\
+    Automatic saving will occur every minute. <br />\
+    <b>You may use Ctrl+S to save</b>\
     </ul> '); // Located at /javascript/alert.js
 
 }
-$('#area').on('focus', function () {
-    $('#HoC').slideUp();
-});
+
 function openDocModal() {
     // Open a modal allowing user to select a document
     var request = $.ajax({
@@ -158,7 +162,6 @@ function getCurrLevel (item) {
 }
 
 
-$('#area').css('font-size', textHeight_s+"px");
 function chkMain() {
     console.log('chkMain called!');
     try {
@@ -174,8 +177,6 @@ function chkMain() {
     catch (err) {
         console.log(err);
     }
-    height += textHeight;
-    $('#area').css('height', height+"px")
     cursorManager.setEndOfContenteditable($('#area'));
 }
 function updateInDocTitle() {
