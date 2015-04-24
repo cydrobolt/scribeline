@@ -6,33 +6,17 @@ block content
 			img(src='/images/scribeline.png')
 		br
 		br
-		b Get Started
-		br
+		h3 Register
 		br
 		div(class="col-md-4")
 		div(class="col-md-4")
-			p
-				| Have you ever sat in class during an important lecture and
-				| skipped note-taking because it was too much work to get 
-				| started? 
-				| Scribeline aims to improve your note-taking experience by
-				| minimizing the work it takes to start a new outline, and 
-				| maximizing productivity.
-			br
 			br
 			form(action="/signup", method="POST")
-				b Username:
+				input(type='text', name='username', placeholder='username', id='username', class='form-control')
 				br
-				input(type='text', name='username', id='username', class='form-control')
+				input(type='email', name='email', placeholder='email', id='email', class='form-control')
 				br
-				b Email:
-				br
-				input(type='email', name='email', id='email', class='form-control')
-				br
-				b Password:
-				br
-				input(type='password', name='password', id='password', class='form-control')
-				br
+				input(type='password', name='password', placeholder='password', id='password', class='form-control')
 				br
 				input(type='submit', id='submit', style="width:80%", class='btn btn-danger', value="Sign Up")
 		div(class="col-md-4")

@@ -5,23 +5,18 @@ html
 		link(rel='stylesheet', href='/stylesheets/style.css')
 		link(href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", rel="stylesheet")
 		link(rel='stylesheet', href='//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css')
-		link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/simplex/bootstrap.min.css", rel="stylesheet")
+		link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cosmo/bootstrap.min.css", rel="stylesheet")
 	body
-		block content
+		.container-fluid
+			block content
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
 		script(src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js")
-		script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
+		script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
 		if (show_footer)
 			div(class='col-md-12')
 				footer(style="padding-top:150px")
 					span(class='pull-left')
 						a(href="//github.com/cydrobolt/scribeline") Github
-						| &nbsp;|&nbsp;
-						a(href="/legal") Legal
-						| &nbsp;|&nbsp;
-						a(href="/about", style="display:inline") About
-					span(class="pull-right", style="display:inline")
-						| Copyright 2014 Chaoyi Zha
 
 		if flash
 			script(src="/javascript/jquery.floatingmessage.min.js")

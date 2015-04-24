@@ -1,0 +1,8 @@
+{
+	"mongoConnect": "mongodb://localhost/scribeline",
+	"listenPort": 5000,
+	"listenHost": "127.0.0.1",
+	
+	"_comment": "Can be development or production",
+	"env": "development"
+}

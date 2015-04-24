@@ -1,12 +1,9 @@
 /*
 
-Scribeline Outline Editor
+Scribeline Note Editor
 http://github.com/cydrobolt/scribeline
 
-
-=======----------=========
-
-Copyright 2014 Chaoyi Zha
+Copyright 2015 Chaoyi Zha
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,16 +33,16 @@ var session = require('express-session');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var app = express();
-/*
- * Mongoose
-*/
 var mongoose = require('mongoose');
+var config = require('../config.json');
+console.log("Starting Scribeline server");
+var random_session_key = Math.random().toString(36);
 app.use(session({
-    secret: 'lol cat'
+    secret: random_session_key
 }));
 
 
-mongoose.connect('mongodb://localhost/scribeline');
+mongoose.connect(config.mongoConnect);
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function callback () {
@@ -55,33 +52,16 @@ var User = mongoose.model('User', { username: String, password: String, email: S
 var Doc = mongoose.model('Doc', {_id: String, username: String, title: String, content: String});
 
 
-// var kitty = new Cat({ name: 'Zildjian' });
-/*
-kitty.save(function (err) {
-  if (err) // ...
-  console.log('meow');
-});
-*/
-/*
- * /Mongoose
-*/
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-/*
- * Routings
- *
-*/
 function genHandleError(res, err) {
 	res.render('error', {error: err});
 }
@@ -153,7 +133,6 @@ app.post('/action-ep', function(req, res) {
         return;
     }
     else if (action == "deleteUserDoc") {
-        var username = req.session.username;
         var d_id = req.param("id");
         try {
             Doc.remove({ _id: d_id, username: username }, function (err) {
@@ -176,11 +155,10 @@ app.post('/action-ep', function(req, res) {
         }
     }
     else if (action == "getUserDocs") {
-        var username = req.session.username;
         // Get all of the user's outlines
         try {
             Doc.find({ username: username }, function (err, dobj) {
-                var map = dobj.map(function(s){return {'_id':s._id, 'title':s.title}});
+                var map = dobj.map(function(s){return {'_id':s._id, 'title':s.title};});
                 map = JSON.stringify(map);
                 res.send(map);
                 res.end();
@@ -194,7 +172,6 @@ app.post('/action-ep', function(req, res) {
         }
     }
     else if (action == "getDoc") {
-        var username = req.session.username;
         var toGetID = req.param('id');
 
         // Get corresponding document
@@ -245,7 +222,6 @@ app.post('/signup', function(req, res) {
 
 
   var email = req.param('email');
-  //res.send("Username: "+username+" <br /> Password: "+password+"<br />Email :"+email);
   var usernamea = username.replace(/[^a-z0-9]/gi,'');
   if (username.length != usernamea.length) {
       res.render('start', {flash: "Only alphanumeric characters may be used in usernames."});
@@ -360,10 +336,6 @@ app.post('/plogin', function(req, res) {
 });
 
 
-/*
- * End routings
-*/
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -375,7 +347,7 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
+if (config.env === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {
@@ -395,5 +367,5 @@ app.use(function(err, req, res, next) {
     });
 });
 
-
+app.listen(config.listenPort, config.listenHost);
 module.exports = app;

@@ -13,13 +13,9 @@ block content
 		div(class="col-md-4")
 
 			form(action="/plogin", method="POST")
-				b Username:
+				input(type='text', name='username', placeholder='username', id='username', class='form-control')
 				br
-				input(type='text', name='username', id='username', class='form-control')
-				br
-				b Password:
-				br
-				input(type='password', name='password', id='password', class='form-control')
+				input(type='password', name='password', placeholder='password', id='password', class='form-control')
 				br
 				br
 				input(type='submit', id='submit', style="width:80%", class='btn btn-danger', value="Sign In")
