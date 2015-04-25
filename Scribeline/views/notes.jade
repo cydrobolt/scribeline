@@ -10,19 +10,19 @@ block content
             img(src='/images/scribeline.png')
         br
         br
-        a(class='btn btn-success', href="#", onclick="saveArea();", id="save")
+        a(class='btn btn-success', href="javascript:void();", onclick="saveArea();", id="save")
             i(class="fa fa-book")
                 |     Save
         &nbsp; &nbsp; &nbsp;
-        a(class='btn btn-danger', href="#", onclick="newArea();")
+        a(class='btn btn-danger', href="javascript:void();", onclick="newArea();")
             i(class="fa fa-file-text")
             |     New
         &nbsp; &nbsp; &nbsp;
-        a(class='btn btn-warning', id="open", href="#", onclick="openDocModal();")
+        a(class='btn btn-warning', id="open", href="javascript:void();", onclick="openDocModal();")
             i(class="fa fa-file-text")
             |     Open
         &nbsp; &nbsp; &nbsp;
-        a(class='btn btn-info', href="#", id="help", onclick="triggerAlert();")
+        a(class='btn btn-info', href="javascript:void();", id="help", onclick="triggerAlert();")
             i(class="fa fa-question-circle")
             |     Help
         div(style="padding-top:20px;padding-bottom:10px;width:40%;margin:0 auto; width: 50%%;", id="stA")
@@ -33,7 +33,6 @@ block content
             div(style="width:100%;height:450px;text-align:left", name="area", id="area", contenteditable="true", TabIndex = "-1", class="form-control")
                 | <div id="idtitle"></div>
                 | <div id="iddate"></div>
-                | <div id="HoC">Start typing here...</div>
     script(src="//cdn.ckeditor.com/4.4.7/standard/ckeditor.js")
     script(src="/javascript/guid.js")
     script(src="/javascript/cursorctl.js")

@@ -97,12 +97,12 @@ app.post('/action-ep', function(req, res) {
         }
         docContent = sanitizeHtml(docContent,
           {
-          allowedTags: [ 'h1','h2','h3', 'h4', 'h5', 'h6', 'blockquote', 'p', 'ul', 'ol', 'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 'code', 'hr', 'br', 'div', 'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre' ],
+          allowedTags: [ 'h1','h2','h3', 'h4', 'h5', 'h6', 'img', 'blockquote', 'p', 'ul', 'ol', 'nl', 'li', 'b', 'i', 'strong', 'em', 'strike', 's', 'code', 'hr', 'br', 'div', 'table', 'thead', 'caption', 'tbody', 'tr', 'th', 'td', 'pre' ],
           allowedAttributes: {
             a: [ 'href', 'name', 'target' ],
             // We don't currently allow img itself by default, but this
             // would make sense if we did
-            img: [ 'src' ]
+            img: [ 'src', 'style' ]
           },
           // Lots of these won't come up by default because we don't allow them
           selfClosing: [ 'img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta' ],
@@ -110,15 +110,16 @@ app.post('/action-ep', function(req, res) {
           allowedSchemes: [ 'http', 'https', 'ftp', 'mailto' ]
           }
       ); // Sanitize
-      try {
-        d_id_rep = d_id_rep.replace(/[^a-z0-9]/gi,''); // Alphanum only
-        docTitle = docTitle.replace(/[^a-z0-9 '_"@&^%$#!.,/]/gi,'');
+        try {
+            d_id_rep = d_id_rep.replace(/[^a-z0-9]/gi,''); // Alphanum only
+            docTitle = docTitle.replace(/[^a-z0-9 '_"@&^%$#!.,/]/gi,'');
         }
         catch (err) {
-            res.render('error', {error: "Server error. Try again later."});
+            res.send("Could not sanitise string...");
             return;
         }
-        var saveDoc = new Doc({username: username, title: docTitle, content: docContent});
+        timestamp = Date.now() / 1000 | 0; // Create UNIX timestamp
+        var saveDoc = new Doc({username: username, title: docTitle, content: docContent, timestamp: timestamp});
         var upsertDoc = saveDoc.toObject();
         delete upsertDoc._id;
         /*saveDoc.save(function (err) {
@@ -127,7 +128,7 @@ app.post('/action-ep', function(req, res) {
               res.send('Error while saving document. Try again later');
           }
         });*/
-    Doc.update({ _id: d_id_rep }, upsertDoc, {upsert: true}, function(err) {/*res.send('Error: Server cannot connect to database.');res.end();return;*/});
+    Doc.update({ _id: d_id_rep }, upsertDoc, {upsert: true}, function(err) {});
         res.send("OK");
         res.end();
         return;
@@ -213,6 +214,7 @@ app.post('/action-ep', function(req, res) {
         return;
     }
 });
+
 app.get('/start', function(req, res) {
   res.render('start', { title: 'Scribeline' });
 });

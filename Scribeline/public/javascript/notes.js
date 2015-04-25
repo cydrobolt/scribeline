@@ -19,6 +19,12 @@ limitations under the License.
 
 */
 
+if (!Date.now) {
+    // < IE8 Shim
+    Date.now = function() { return new Date().getTime(); };
+}
+
+
 CKEDITOR.config.enterMode = CKEDITOR.ENTER_BR;
 CKEDITOR.config.forcePasteAsPlainText = false; // default so content won't be manipulated on load
 CKEDITOR.config.basicEntities = true;
@@ -37,7 +43,7 @@ CKEDITOR.inline('area');
 
 function setDocDate() {
     var language = window.navigator.userLanguage || window.navigator.language;
-    var date = new Date;
+    var date = new Date();
     var options = {
         weekday: "long",
         year: "numeric",
@@ -46,13 +52,12 @@ function setDocDate() {
     };
     var formatted_date = date.toLocaleDateString(language, options);
     $('#iddate').html('<em><b>'+formatted_date+'</b></em><br /><br />');
+    $('#iddate').removeAttr('id');
 }
 window.onload = function() { // Doing it the old fashioned non-jQuery way
-    setDocDate(); // Set date on new doc
     var autosave = window.setInterval(autoSaveArea, 60000); // Start autosaver, every min
     $('#area').on('focus', function () {
-        $('#HoC').slideUp();
-        $('#HoC').remove();
+        setDocDate(); // Set date on focus
     });
 };
 
@@ -156,11 +161,6 @@ function getPrecedingNodeCursor() {
     var next_node = anchor_node.nextSibling;
     return previous_node;
 }
-
-function getCurrLevel (item) {
-    $(item).parents('ul').length; // $(item) might need to be replaced with item
-}
-
 
 function chkMain() {
     console.log('chkMain called!');
