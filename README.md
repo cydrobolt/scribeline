@@ -17,6 +17,8 @@ Scribeline is an open-source note-taking application.
  - Run Scribeline: `nodemon app` in Scribeline/Scribeline, or `node app.js`
  - Have fun!
 
+![Scribeline](http://i.imgur.com/EJMG4mn.png)
+
 ```
 Copyright 2015 Chaoyi Zha <me [at] cydrobolt [dot] com>
 
