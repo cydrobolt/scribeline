@@ -7,7 +7,7 @@ Scribeline is an open-source note-taking application.
  - Node.js
  - MongoDB
  - Optional: global `nodemon` (`sudo npm -g install nodemon`)
- - `npm` dependencies are mostly included in node_modules, but the rest is in package.json
+ - `npm` dependencies
 
 ###Starting Scribeline
  - Clone repo: `git clone https://github.com/cydrobolt/scribeline.git`
