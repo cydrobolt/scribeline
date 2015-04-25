@@ -66,7 +66,7 @@ function triggerAlert () {
     Save as you type, or open a new file to get started right away! <br/>\
     Automatic saving will occur every minute. <br />\
     <b>You may use Ctrl+S to save</b>\
-    </ul> '); // Located at /javascript/alert.js
+    </ul> ');
 
 }
 
@@ -109,7 +109,7 @@ function openDocModal() {
     });
 
     request.fail(function(jqXHR, textStatus) {
-        createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not reach server. Try again later.");
+        createAlert('<i class="fa fa-ban"></i> Alert<br />', "Could not reach server. Try again later.");
         $("#open").html('<i class="fa fa-folder">    Open</i>');
     });
 }
@@ -167,11 +167,9 @@ function chkMain() {
     try {
         if (currLevel>0) {
             cursorPasteHTML("</li><li id='chkmaincr'>");
-            console.log('lied');
         }
         else {
             cursorPasteHTML("<br />");
-            console.log('bred')
         }
     }
     catch (err) {
@@ -182,7 +180,7 @@ function chkMain() {
 function updateInDocTitle() {
     var docTitle = $('#dtitle').val();
     $('#idtitle').html("<h1>"+docTitle+"</h1><br />");
-    console.log('Updating doc title.')
+    console.log('Updating doc title.');
     return;
 }
 
@@ -205,7 +203,7 @@ function delLevel() {
 }
 
 function saveArea() {
-    // Saves text/outline onto MongoDB
+    // Saves text/outline
     var docTitle = $("#dtitle").val();
     var docContent = $("#area").html();
     var request = $.ajax({
@@ -276,7 +274,7 @@ function autoSaveArea() {
         return; // Wait until a successful save before autosaving
         //          if an error occured
     }
-    // Saves text/outline onto MongoDB
+    // Saves text/outline
     var docTitle = $("#dtitle").val();
     var docContent = $("#area").html();
     var request = $.ajax({

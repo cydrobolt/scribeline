@@ -283,7 +283,6 @@ app.get('/signin', function(req, res) {
 	res.render('signin');
 });
 app.get('/logout', function(req, res) {
-    req.session.username = "";
     req.session.username = null;
     delete req.session.username;
     res.writeHead(301,
