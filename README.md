@@ -1,26 +1,24 @@
 Scribeline
 ==========
 
-Simplify your life by making note-taking and outline creation second nature with Scribeline.
+Scribeline is an open-source note-taking application.
 
 ###Dependencies:
  - Node.js
- - Express 4 (included in Node modules, listed in package.json)
- - MongoDB (not included)
- - NPM dependencies are mostly included in node_modules, but the rest is in package.json
+ - MongoDB
+ - Optional: global `nodemon` (`sudo npm -g install nodemon`)
+ - `npm` dependencies are mostly included in node_modules, but the rest is in package.json
 
-#####Scribeline is not ready for production
-For instance,
-
- - No configuration files for production
- - Default settings expose your stacktraces
- - Secret key is unsafe by default
- - Still in heavy development and things may be buggy
-
- 
+###Starting Scribeline
+ - Clone repo: `git clone https://github.com/cydrobolt/scribeline.git`
+ - Navigate to Scribeline folder: `cd scribeline/scribeline`
+ - Install `npm` dependencies: `npm install`
+ - Configure Scribeline with your favourite text editor (config.json in root directory)
+ - Run Scribeline: `nodemon app` in Scribeline/Scribeline, or `node app.js`
+ - Have fun!
 
 ```
-Copyright 2014 Chaoyi Zha
+Copyright 2015 Chaoyi Zha <me [at] cydrobolt [dot] com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

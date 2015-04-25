@@ -28,7 +28,7 @@ block content
         div(style="padding-top:20px;padding-bottom:10px;width:40%;margin:0 auto; width: 50%%;", id="stA")
         br
         div(style='margin:0 auto; width: 70%; padding-top:50px')
-            input(type="text", id="dtitle", class="form-control", style="width:460px", onkeyup="updateInDocTitle();", placeholder="Outline Title")
+            input(type="text", id="dtitle", class="form-control", style="width:460px", onkeyup="updateInDocTitle();", placeholder="Note Title")
             br
             div(style="width:100%;height:450px;text-align:left", name="area", id="area", contenteditable="true", TabIndex = "-1", class="form-control")
                 | <div id="idtitle"></div>
@@ -41,20 +41,8 @@ block content
     script(src="/javascript/shortcut.js")
 
     script
-        | shortcut.add("Ctrl+Y",function() {
-        |   addLevel();
-        | });
         | shortcut.add("Ctrl+O",function() {
         |   openDocModal();
-        | });
-        | shortcut.add("Ctrl+Alt+E",function() {
-        |   shortenField();
-        | });
-        | shortcut.add("Enter",function() {
-        | 	chkMain();
-        | });
-        | shortcut.add("Ctrl+U",function() {
-        | 	delLevel();
         | });
         | shortcut.add("Ctrl+S",function() {
         | 	saveArea();

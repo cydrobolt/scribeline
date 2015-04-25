@@ -184,24 +184,6 @@ function updateInDocTitle() {
     return;
 }
 
-function addLevel() {
-    //cursorPasteHTML('<ul><li>');
-    insertHtmlAtCursor("<ul><li>");
-    currLevel++;
-    cursorManager.setEndOfContenteditable($('#area'));
-}
-function shortenField() {
-    height -= textHeight;
-    $('#area').css('height', height+"px");
-    cursorManager.setEndOfContenteditable($('#area'));
-}
-function delLevel() {
-    insertHtmlAtCursor("</ul>");
-    currLevel--;
-    cursorManager.setEndOfContenteditable($('#area'));
-
-}
-
 function saveArea() {
     // Saves text/outline
     var docTitle = $("#dtitle").val();
@@ -345,5 +327,3 @@ function createPrint() {
 
 
 }
-
-// Also requires jQuery and Bootstrap JS
