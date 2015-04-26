@@ -49,7 +49,7 @@ db.once('open', function callback () {
   console.log("Connected to MongoDB server");
 });
 var User = mongoose.model('User', { username: String, password: String, email: String, iters: Number, salt: String });
-var Doc = mongoose.model('Doc', {_id: String, username: String, title: String, content: String});
+var Doc = mongoose.model('Doc', {_id: String, username: String, title: String, content: String, created: Number});
 
 
 // view engine setup
@@ -118,8 +118,8 @@ app.post('/action-ep', function(req, res) {
             res.send("Could not sanitise string...");
             return;
         }
-        timestamp = Date.now() / 1000 | 0; // Create UNIX timestamp
-        var saveDoc = new Doc({username: username, title: docTitle, content: docContent, timestamp: timestamp});
+        unix_timestamp = Date.now() / 1000 | 0; // Create UNIX timestamp
+        var saveDoc = new Doc({username: username, title: docTitle, content: docContent, created: unix_timestamp});
         var upsertDoc = saveDoc.toObject();
         delete upsertDoc._id;
         /*saveDoc.save(function (err) {
@@ -128,7 +128,7 @@ app.post('/action-ep', function(req, res) {
               res.send('Error while saving document. Try again later');
           }
         });*/
-    Doc.update({ _id: d_id_rep }, upsertDoc, {upsert: true}, function(err) {});
+        Doc.update({ _id: d_id_rep }, upsertDoc, {upsert: true}, function(err) {});
         res.send("OK");
         res.end();
         return;
@@ -159,7 +159,7 @@ app.post('/action-ep', function(req, res) {
         // Get all of the user's outlines
         try {
             Doc.find({ username: username }, function (err, dobj) {
-                var map = dobj.map(function(s){return {'_id':s._id, 'title':s.title};});
+                var map = dobj.map(function(s){return {'_id':s._id, 'title':s.title, 'timestamp':s.created};});
                 map = JSON.stringify(map);
                 res.send(map);
                 res.end();

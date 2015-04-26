@@ -69,6 +69,20 @@ function triggerAlert () {
     </ul> ');
 
 }
+function timeConverter(UNIX_timestamp) {
+    console.log(UNIX_timestamp);
+    var a = new Date(UNIX_timestamp*1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var day = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    // var time = date + ',' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    var time = month + ' ' + day + " " + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
+}
 
 function openDocModal() {
     // Open a modal allowing user to select a document
@@ -86,22 +100,25 @@ function openDocModal() {
        // msg is a Map of Mongoose's output
        delete docCompilation;
         var docCompilation = ""; // Init String
-        var id, title, items;
+        var id, title, items, doc_date;
         items = 0;
         docCompilation += '<table class="table table-hover">\
         <thead><tr><th>Document Title</th><th>Last Modified</th><th>Delete</th></thead><tbody>';
-        for (variable in docObj) {
+        for (var variable in docObj) {
             id = docObj[variable]._id;
             title = docObj[variable].title;
-            if(title == undefined) {
+            var unix_date = docObj[variable].timestamp;
+            doc_date = timeConverter(unix_date);
+
+            if(title === undefined) {
                 continue;
             }
             items++;
 
-            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+title+"</a></td>"+"<td>14/14/2014</td>"+"<td><a href='#' class='btn btn-sm btn-danger' onclick=\"deleteDoc('"+id+"');\">Delete</a></tr>";
+            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+title+"</a></td>"+"<td>"+doc_date+"</td>"+"<td><a href='#' class='btn btn-sm btn-warning' onclick=\"deleteDoc('"+id+"');\">Delete</a></tr>";
         }
         docCompilation += "</tbody></table>";
-        if (items == 0) {
+        if (items === 0) {
             docCompilation = "<p>You don't seem to have any documents. Why don't you create one?</p>";
         }
        createModal("Your Docs", docCompilation);
