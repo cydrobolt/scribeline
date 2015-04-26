@@ -70,7 +70,6 @@ function triggerAlert () {
 
 }
 function timeConverter(UNIX_timestamp) {
-    console.log(UNIX_timestamp);
     var a = new Date(UNIX_timestamp*1000);
     var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     var year = a.getFullYear();
@@ -116,8 +115,8 @@ function openDocModal() {
             items++;
             unesc_title = title;
             title = title.replace(/'/g, "\\'"); // escape quotes
-            title = title.replace(/"/g, '\\"');
-            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+unesc_title+"</a></td>"+"<td>"+doc_date+"</td>"+"<td><a href='#' class='btn btn-sm btn-warning' onclick=\"deleteDoc('"+id+"');\">Delete</a></tr>";
+            title = title.replace(/"/g, '\\x22');
+            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+unesc_title+"</a></td>"+"<td>"+doc_date+"</td>"+"<td><a href='#' class='btn btn-sm btn-warning' onclick=\"deleteDoc('"+id+"');\">Delete</a></tr>";
         }
         docCompilation += "</tbody></table>";
         if (items === 0) {
@@ -137,7 +136,6 @@ function openDoc(theID, theTitle) {
     var docToOpenID = theID;
     var docToOpenTitle = theTitle;
 
-    console.log(this.id);
     var request = $.ajax({
         url: "/action-ep",
         type: "POST",
@@ -151,7 +149,6 @@ function openDoc(theID, theTitle) {
             $('#dtitle').val(docToOpenTitle);
             currID = docToOpenID;
             $('#area').html(msg);
-            console.log(msg);
             $("#open").html('<i class="fa fa-folder">    Open</i>');
 
         }
@@ -182,7 +179,6 @@ function getPrecedingNodeCursor() {
 }
 
 function chkMain() {
-    console.log('chkMain called!');
     try {
         if (currLevel>0) {
             cursorPasteHTML("</li><li id='chkmaincr'>");

@@ -4,6 +4,7 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res) {
     var username = req.session.username;
+    console.log(username);
     if (username && username !== null && username.length > 0) {
         res.render('notes', {username: username, show_footer: "True"});
         res.end();

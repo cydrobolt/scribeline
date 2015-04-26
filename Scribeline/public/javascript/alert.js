@@ -11,10 +11,6 @@ function createAlert(title, content) {
 }
 function createModal(title, content) {
     var modal = '\
-      <!-- Button trigger modal -->\
-      <!-- Call modal with $("#SLModal").modal(options) -->\
-      <!-- Make each file have the data-dismiss="modal" attribute -->\
-    <!-- Modal -->\
     <div class="modal fade" id="SLModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">\
       <div class="modal-dialog">\
         <div class="modal-content">\
