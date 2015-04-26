@@ -114,8 +114,10 @@ function openDocModal() {
                 continue;
             }
             items++;
-
-            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+title+"</a></td>"+"<td>"+doc_date+"</td>"+"<td><a href='#' class='btn btn-sm btn-warning' onclick=\"deleteDoc('"+id+"');\">Delete</a></tr>";
+            unesc_title = title;
+            title = title.replace(/'/g, "\\'"); // escape quotes
+            title = title.replace(/"/g, '\\"');
+            docCompilation += "<tr><td><a href='#' data-dismiss=\"modal\" class='"+title+"' id='"+id+"' onclick=\"openDoc('"+id+"', '"+title+"');\">"+unesc_title+"</a></td>"+"<td>"+doc_date+"</td>"+"<td><a href='#' class='btn btn-sm btn-warning' onclick=\"deleteDoc('"+id+"');\">Delete</a></tr>";
         }
         docCompilation += "</tbody></table>";
         if (items === 0) {

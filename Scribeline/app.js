@@ -27,7 +27,6 @@ var cookieParser = require('cookie-parser');
 var session = require('cookie-session');
 var bodyParser = require('body-parser');
 var routes = require('./routes/index');
-var users = require('./routes/users');
 var sanitizeHtml = require('sanitize-html');
 var session = require('express-session');
 var bcrypt = require('bcrypt-nodejs');
