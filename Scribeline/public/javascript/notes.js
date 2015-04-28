@@ -91,7 +91,7 @@ function openDocModal() {
         data: {'action': "getUserDocs"},
         dataType: "html"
     });
-    $("#open").html('<span><img src="/images/loading.gif" width="20px" height="20px">&nbsp;&nbsp; Opening Modal...</span>');
+    $("#open").html('<span><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp; Opening Modal...</span>');
     request.done(function(msg) {
 
        $("#open").html('<i class="fa fa-folder">    Open</i>');
@@ -142,7 +142,7 @@ function openDoc(theID, theTitle) {
         data: {'action': "getDoc", "id": docToOpenID},
         dataType: "html"
     });
-    $("#open").html('<span><img src="/images/loading.gif" width="20px" height="20px">&nbsp;&nbsp; Opening Document...</span>');
+    $("#open").html('<span><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp; Opening Document...</span>');
     request.done(function(msg) {
         if (msg != "ERROR") {
             // Update Area
@@ -209,7 +209,7 @@ function saveArea() {
         data: {'action': "save", 'title': docTitle, 'content': docContent, 'id': currID},
         dataType: "html"
     });
-    $("#save").html('<span><img src="/images/loading.gif" width="20px" height="20px">&nbsp;&nbsp; Saving...</span>');
+    $("#save").html('<span><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp; Saving...</span>');
     request.done(function(msg) {
        if(msg=='OK') {
            $("#save").html('<i class="fa fa-book">    Save</i>');
@@ -280,7 +280,7 @@ function autoSaveArea() {
         data: {'action': "save", 'title': docTitle, 'content': docContent, 'id': currID},
         dataType: "html"
     });
-    $("#save").html('<span><img src="/images/loading.gif" width="20px" height="20px">&nbsp;&nbsp; Autosaving...</span>');
+    $("#save").html('<span><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp; Autosaving...</span>');
     request.done(function(msg) {
        if(msg=='OK') {
            $("#save").html('<i class="fa fa-book">    Save</i>');
