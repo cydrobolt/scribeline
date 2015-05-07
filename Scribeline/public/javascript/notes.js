@@ -166,7 +166,7 @@ function openDoc(theID, theTitle) {
 }
 function getPrecedingNodeCursor() {
     // Gets node preceding the cursor in #area
-    var selection
+    var selection;
     if (window.getSelection){
         selection = window.getSelection();}
     else if (document.selection && document.selection.type != "Control"){
@@ -267,7 +267,7 @@ function deleteDoc(tdocID) {
 var autoSaveAlerted = false;
 var stopAutoSave; // Stop autosaving if something is broken
 function autoSaveArea() {
-    if (stopAutoSave == true) {
+    if (stopAutoSave === true) {
         return; // Wait until a successful save before autosaving
         //          if an error occured
     }
