@@ -15,7 +15,6 @@ Scribeline is an open-source note-taking application.
  - Install `npm` dependencies: `npm install`
  - Configure Scribeline with your favourite text editor (config.json in root directory)
  - Run Scribeline: `nodemon app` in Scribeline/Scribeline, or `node app.js`
- - Have fun!
 
 ![Scribeline](http://i.imgur.com/EJMG4mn.png)
 
