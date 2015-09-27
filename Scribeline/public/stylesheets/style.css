@@ -5,7 +5,33 @@ body {
 a {
   color: #00B7FF;
 }
+
 #area {
     height: auto;
     overflow: auto;
+}
+
+.themeSelector {
+    width: 200px !important;
+    margin-bottom: 10px;
+}
+
+#themeDialog {
+    padding-top: 50px;
+    margin: 0 auto;
+    width: 200px;
+}
+
+.changeThemeButton {
+    margin-right: 10px;
+}
+
+.noteTitleWrapper {
+    margin: 0 auto;
+    width: 70%;
+    padding-top:50px;
+}
+
+.noDisplay {
+    display: none;
 }

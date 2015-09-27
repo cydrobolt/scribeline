@@ -5,7 +5,14 @@ html
 		link(rel='stylesheet', href='/stylesheets/style.css')
 		link(href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", rel="stylesheet")
 		link(rel='stylesheet', href='//ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css')
-		link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.4/cosmo/bootstrap.min.css", rel="stylesheet")
+		
+		if user_theme
+			- user_theme = "//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/" + user_theme + "/bootstrap.min.css" 
+			link(href=user_theme, rel="stylesheet")
+		else
+			link(href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.5/cosmo/bootstrap.min.css", rel="stylesheet")
+
+		meta(name='viewport', content='width=device-width, initial-scale=1')
 	body
 		script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
 		.container-fluid

@@ -78,7 +78,6 @@ function timeConverter(UNIX_timestamp) {
     var hour = a.getHours();
     var min = a.getMinutes();
     var sec = a.getSeconds();
-    // var time = date + ',' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
     var time = month + ' ' + day + " " + year + ' ' + hour + ':' + min + ':' + sec ;
     return time;
 }
@@ -91,10 +90,9 @@ function openDocModal() {
         data: {'action': "getUserDocs"},
         dataType: "html"
     });
-    $("#open").html('<span><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp; Opening Modal...</span>');
+    $("#openFile").html('<span><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp; Opening Modal...</span>');
     request.done(function(msg) {
-
-       $("#open").html('<i class="fa fa-folder">    Open</i>');
+       $("#openFile").html('<i class="fa fa-folder">    Open</i>');
        var docObj = JSON.parse(msg); // Parse into object
        // msg is a Map of Mongoose's output
        delete docCompilation;
@@ -164,39 +162,19 @@ function openDoc(theID, theTitle) {
         $("#open").html('<i class="fa fa-folder">    Open</i>');
     });
 }
-function getPrecedingNodeCursor() {
-    // Gets node preceding the cursor in #area
-    var selection;
-    if (window.getSelection){
-        selection = window.getSelection();}
-    else if (document.selection && document.selection.type != "Control"){
-        selection = document.selection;}
 
-    var anchor_node = selection.anchorNode; //current node on which cursor is positioned
-    var previous_node = anchor_node.previousSibling;
-    var next_node = anchor_node.nextSibling;
-    return previous_node;
-}
-
-function chkMain() {
-    try {
-        if (currLevel>0) {
-            cursorPasteHTML("</li><li id='chkmaincr'>");
-        }
-        else {
-            cursorPasteHTML("<br />");
-        }
-    }
-    catch (err) {
-        console.log(err);
-    }
-    cursorManager.setEndOfContenteditable($('#area'));
-}
 function updateInDocTitle() {
     var docTitle = $('#dtitle').val();
     $('#idtitle').html("<h1>"+docTitle+"</h1><br />");
     console.log('Updating doc title.');
     return;
+}
+
+function openThemeSettings() {
+    $("#themeDialog").fadeIn();
+}
+function closeSettings() {
+    $("#themeDialog").fadeOut();
 }
 
 function saveArea() {
@@ -209,32 +187,30 @@ function saveArea() {
         data: {'action': "save", 'title': docTitle, 'content': docContent, 'id': currID},
         dataType: "html"
     });
-    $("#save").html('<span><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp; Saving...</span>');
+    $("#saveFile").html('<span><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp; Saving...</span>');
     request.done(function(msg) {
        if(msg=='OK') {
-           $("#save").html('<i class="fa fa-book">    Save</i>');
+           $("#saveFile").html('<i class="fa fa-book">    Save</i>');
            stopAutoSave = false;
        }
        else if(msg.toLowerCase().search("error")>0) {
            createAlert('<i class="fa fa-ban"></i> Alert</br >', msg);
-           $("#save").html('<i class="fa fa-book">    Save</i>');
+           $("#saveFile").html('<i class="fa fa-book">    Save</i>');
        }
        else {
            createAlert('<i class="fa fa-ban"></i> Alert</br >', "Generic unhandled error. Try again later. "+msg);
-           $("#save").html('<i class="fa fa-book">    Save</i>');
+           $("#saveFile").html('<i class="fa fa-book">    Save</i>');
 
        }
     });
 
     request.fail(function(jqXHR, textStatus) {
         createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not reach server. Try again later.");
-        $("#save").html('<i class="fa fa-book">    Save</i>');
+        $("#saveFile").html('<i class="fa fa-book">    Save</i>');
     });
 }
 function deleteDoc(tdocID) {
-
-    // Saves text/outline onto MongoDB
-    // $.blockUI({ message: '<img src="/images/loading.gif" />' });
+    // Saves document onto MongoDB
     $('#SLModal').modal('hide'); // Close modal
     $('#SLModal').on('hidden.bs.modal', function (e) {
         $('#SLModal').remove();
@@ -247,12 +223,10 @@ function deleteDoc(tdocID) {
         request.done(function(msg) {
            if(msg=='OK') {
                  openDocModal(); // recreate docModal
-                 //$.unblockUI();
                  console.log('OK');
            }
            else {
                createAlert('<i class="fa fa-ban"></i> Alert</br >', "Could not delete. Perhaps you are not logged in or the document was not found.");
-               //$.unblockUI();
                console.log('ERROR');
            }
 
@@ -321,6 +295,27 @@ function newArea() {
     createAlert('', "New document created!");
 }
 
+$(function() {
+    $("#openFile").click(function () {
+        openDocModal();
+    });
+    $("#newFile").click(function () {
+        newArea();
+    });
+    $("#saveFile").click(function () {
+        saveArea();
+    });
+    $("#openSettings").click(function () {
+        openThemeSettings();
+    });
+    $("#openHelp").click(function () {
+        triggerAlert();
+    });
+    $("#closeSettings").click(function () {
+        closeSettings();
+    });
+});
+
 
 function createPrint() {
     var css = "@media print {\
@@ -339,6 +334,4 @@ function createPrint() {
 
     var htmlCSS = "<html><head><style>"+css+"</style></head><body>"+$('#area').html()+"</body></html>";
     // TODO: themes for printing and editing in general
-
-
 }

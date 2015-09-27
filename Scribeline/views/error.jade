@@ -2,5 +2,7 @@ extends layout
 
 block content
   h1= message
-  h2= error.status
-  pre #{error}
+  if error
+      h2= error.status
+      pre #{error}
+  a(class="btn btn-2x btn-primary", href="/") Back
