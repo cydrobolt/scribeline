@@ -40,7 +40,9 @@ var buf = crypto.randomBytes(128);
 var random_session_key = buf.toString('hex');
 
 app.use(session({
-    secret: random_session_key
+    secret: random_session_key,
+    resave: false,
+    saveUninitialized: false
 }));
 
 mongoose.connect(config.mongoConnect);
