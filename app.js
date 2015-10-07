@@ -33,7 +33,7 @@ var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
 var app = express();
 var mongoose = require('mongoose');
-var config = require('../config.json');
+var config = require('./config.json');
 console.log("Starting Scribeline server");
 var random_session_key = Math.random().toString(36);
 app.use(session({

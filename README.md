@@ -1,7 +1,7 @@
 Scribeline
 ==========
 
-Scribeline is an open-source note-taking application.
+Scribeline is an open-source note-taking web application.
 
 ###Dependencies:
  - Node.js
@@ -11,7 +11,7 @@ Scribeline is an open-source note-taking application.
 
 ###Starting Scribeline
  - Clone repo: `git clone https://github.com/cydrobolt/scribeline.git`
- - Navigate to Scribeline folder: `cd scribeline/scribeline`
+ - Navigate to Scribeline folder: `cd scribeline`
  - Install `npm` dependencies: `npm install`
  - Configure Scribeline with your favourite text editor (config.json in root directory)
  - Run Scribeline: `nodemon app` in Scribeline/Scribeline, or `node app.js`
