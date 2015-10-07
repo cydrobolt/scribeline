@@ -35,11 +35,13 @@ var app = express();
 var mongoose = require('mongoose');
 var config = require('./config.json');
 console.log("Starting Scribeline server");
-var random_session_key = Math.random().toString(36);
+
+var buf = crypto.randomBytes(128);
+var random_session_key = buf.toString('hex');
+
 app.use(session({
     secret: random_session_key
 }));
-
 
 mongoose.connect(config.mongoConnect);
 var db = mongoose.connection;
