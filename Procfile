@@ -1,1 +1,1 @@
-web: cd Scribeline && npm start
+web: npm start
